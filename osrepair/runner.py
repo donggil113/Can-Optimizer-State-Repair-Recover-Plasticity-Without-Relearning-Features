@@ -302,8 +302,29 @@ def run_tuning(cfg: dict, tuning_log: JsonlLog, deadline: float) -> dict:
         # Deterministic rule: highest mean dev score, ties -> earliest grid entry.
         best = max(range(len(rows)), key=lambda i: (rows[i]["score"], -i))
         results[fam_name] = {"best": rows[best]["optimizer"], "rows": rows,
-                             "n_runs": len(rows) * len(tcfg["seeds"]), "steps_per_run": e}
+                             "n_runs": len(rows) * len(tcfg["seeds"]), "steps_per_run": e,
+                             "best_at_grid_edge": grid_edges(fam["grid"], fam["grid"][best])}
     return results
+
+
+def grid_edges(grid: list[dict], chosen: dict) -> dict:
+    """Numeric hyperparameters whose selected value is the min or max of the grid.
+
+    A selection at the edge means the optimum may lie outside the searched
+    range, so the baseline is not demonstrably tuned.
+    """
+    out = {}
+    for k, v in chosen.items():
+        if isinstance(v, bool) or not isinstance(v, (int, float)):
+            continue
+        vals = sorted({g[k] for g in grid if k in g})
+        if len(vals) < 2:
+            continue
+        if v == vals[0]:
+            out[k] = "min"
+        elif v == vals[-1]:
+            out[k] = "max"
+    return out
 
 
 # ------------------------------------------------------------------- main
@@ -496,7 +517,12 @@ def render_summary(cfg: dict, manifest: dict, summary: dict) -> str:
              f"- wall: {manifest['wall_seconds']:.1f}s, cpu: {manifest['cpu_seconds']:.1f}s, "
              f"peak RSS: {manifest['peak_rss_kb'] / 1024:.1f} MiB",
              f"- base optimizer (resolved): {manifest.get('base_optimizer_resolved')}",
-             "",
+             ""]
+    for fam, r in (manifest.get("tuning") or {}).get("results", {}).items():
+        if r.get("best_at_grid_edge"):
+            lines.append(f"- WARNING: tuned family {fam!r} selected a grid-edge value {r['best_at_grid_edge']}; "
+                         f"the optimum may lie outside the grid (baseline not demonstrably tuned).")
+    lines += ["",
              "Paired differences vs keep_all over test seeds (mean [min, max]).",
              "Descriptive only: n is tiny and nothing here is a hypothesis test.", "",
              "| arm | timing | status | d new_task_auc_acc | d forgetting_prev | d cka_end | d upd_norm_first10 |",

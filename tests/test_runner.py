@@ -9,7 +9,7 @@ import shutil
 import tempfile
 import unittest
 
-from osrepair.runner import run_experiment, validate_config
+from osrepair.runner import grid_edges, run_experiment, validate_config
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SMOKE = os.path.join(os.path.dirname(HERE), "configs", "p4_smoke.json")
@@ -119,6 +119,31 @@ class TestRunnerEndToEnd(unittest.TestCase):
         for name in ("keep_all", "adam_base_replay"):
             for k, v in self.manifest["paired_deltas"][name].items():
                 self.assertEqual(v["per_seed"], [0.0] * len(v["per_seed"]), (name, k))
+
+
+class TestGridEdges(unittest.TestCase):
+    def test_flags_min_and_max_only(self):
+        grid = [{"lr": 0.001, "beta2": 0.999}, {"lr": 0.003, "beta2": 0.99}, {"lr": 0.01, "beta2": 0.9}]
+        self.assertEqual(grid_edges(grid, {"kind": "adam", "lr": 0.01, "beta2": 0.99}), {"lr": "max"})
+        self.assertEqual(grid_edges(grid, {"lr": 0.003, "beta2": 0.999}), {"beta2": "max"})
+        self.assertEqual(grid_edges(grid, {"lr": 0.001, "beta2": 0.99}), {"lr": "min"})
+        self.assertEqual(grid_edges([{"lr": 0.1}], {"lr": 0.1}), {})
+
+    def test_recorded_in_manifest(self):
+        cfg = tiny_config()
+        cfg["arms"] = [a for a in cfg["arms"] if a["name"] == "keep_all"]
+        cfg["test_seeds"] = [3000]
+        tmp = tempfile.mkdtemp()
+        try:
+            m = run_experiment(cfg, os.path.join(tmp, "r"), argv=["test"])
+            for fam, r in m["tuning"]["results"].items():
+                self.assertEqual(r["best_at_grid_edge"], grid_edges(cfg["tuning"]["families"][fam]["grid"], r["best"]))
+            with open(os.path.join(tmp, "r", "summary.md")) as f:
+                text = f.read()
+            if any(r["best_at_grid_edge"] for r in m["tuning"]["results"].values()):
+                self.assertIn("WARNING", text)
+        finally:
+            shutil.rmtree(tmp)
 
 
 class TestValidationAndFailures(unittest.TestCase):

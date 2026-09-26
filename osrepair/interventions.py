@@ -6,6 +6,10 @@ State-only interventions (weights, buffers, RNG and data position untouched):
     reset_m     m <- 0
     reset_v     v <- 0
     reset_both  m <- 0, v <- 0
+    reset_t     moments kept, both bias-correction ages <- 0 (the step-counter-only
+                reset of Adam-Rel, Ellis et al. 2024). The kept moments are then
+                divided by 1 - beta^1, i.e. deliberately over-corrected; that is
+                the published method, so the counter policy does not apply.
     mix         m <- rho_m * m + (1 - rho_m) * m_ref,  v likewise.
                 The default reference is the freshly initialised state
                 (m_ref = v_ref = 0, age 0), i.e. a soft reset.
@@ -43,7 +47,7 @@ from __future__ import annotations
 import copy
 import math
 
-STATE_ONLY_KINDS = ("keep_all", "reset_m", "reset_v", "reset_both", "mix")
+STATE_ONLY_KINDS = ("keep_all", "reset_m", "reset_v", "reset_both", "reset_t", "mix")
 COUNTER_POLICIES = ("decoupled", "shared_keep", "shared_reset")
 
 
@@ -118,6 +122,12 @@ def apply_adam_intervention(opt_sd: dict, spec: dict, reference_sd: dict | None 
                 st["t_v"] = st["t_v"] * math.log(b2) / math.log(nb2) if st["t_v"] > 0 else 0.0
         hp["beta1"], hp["beta2"] = nb1, nb2
         record.update({"beta1": [b1, nb1], "beta2": [b2, nb2]})
+        return sd, record
+
+    if kind == "reset_t":
+        for st in sd["state"].values():
+            st["t_m"] = 0.0
+            st["t_v"] = 0.0
         return sd, record
 
     counter = spec.get("counter", "decoupled")

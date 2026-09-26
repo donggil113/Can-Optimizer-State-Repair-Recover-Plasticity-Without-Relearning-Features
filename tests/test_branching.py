@@ -22,6 +22,7 @@ STATE_ONLY = [
     {"kind": "mix", "rho_m": 0.5, "rho_v": 0.5, "counter": "decoupled"},
     {"kind": "reset_v", "counter": "shared_keep"},
     {"kind": "reset_m", "counter": "shared_reset"},
+    {"kind": "reset_t"},
 ]
 
 

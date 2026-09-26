@@ -216,6 +216,52 @@ class TestResetBiasCorrection(unittest.TestCase):
         self.assertTrue(close(ratio, (1 - B1) / math.sqrt(1 - B2) * math.sqrt(1 - B2 ** a) / (1 - B1 ** a), rel=1e-6))
 
 
+class TestResetT(unittest.TestCase):
+    """Step-counter-only reset (Adam-Rel, Ellis et al. 2024), checked against their closed forms.
+
+    Their Thm 3.1 (eps = 0): gradient g for t' -> inf steps, then k*g; at step t after the jump
+        u_t = (b1^(t+1) + k(1 - b1^(t+1))) / sqrt(b2^(t+1) + k^2 (1 - b2^(t+1)))
+    and with the counter reset (their Eq. 4) u_t is multiplied by sqrt(1 - b2^(t+1)) / (1 - b1^(t+1)).
+    We check t = 0 (first step after the jump), with t' = 40000 standing in for infinity and
+    g = 1: as k grows, u_0 -> (1-b1)/sqrt(1-b2) without reset and -> 1 with reset.
+    Formulas read from arXiv:2412.17113 (HTML), 2026-09-26.
+    """
+
+    def first_step_ratio(self, k, reset_t, history=40000):
+        params, opt = make_adam(n=1)
+        for _ in range(history):
+            opt.compute_update({"w": [1.0]})
+        if reset_t:
+            intervene(opt, {"kind": "reset_t"})
+        return abs(step(params, opt, [k])[0]) / LR
+
+    def test_first_step_formula(self):
+        params, opt = make_adam(n=1)
+        r = RNG(2)
+        for _ in range(300):
+            step(params, opt, [r.gauss()])
+        m0, v0 = opt.state["w"]["m"][0], opt.state["w"]["v"][0]
+        rec = intervene(opt, {"kind": "reset_t"})
+        self.assertTrue(rec["state_only"])
+        self.assertEqual(opt.state["w"]["m"][0], m0)   # moments untouched
+        g = 0.4
+        d = step(params, opt, [g])[0]
+        mh = (B1 * m0 + (1 - B1) * g) / (1 - B1)
+        vh = (B2 * v0 + (1 - B2) * g * g) / (1 - B2)
+        self.assertTrue(close(d, -LR * mh / (math.sqrt(vh) + EPS)))
+
+    def test_ellis_thm31_and_eq4_limits(self):
+        for k in (1e4, 1e6):
+            no_reset = self.first_step_ratio(k, reset_t=False)
+            with_reset = self.first_step_ratio(k, reset_t=True)
+            exact_no = (B1 + k * (1 - B1)) / math.sqrt(B2 + k * k * (1 - B2))
+            exact_rel = ((B1 + k * (1 - B1)) / (1 - B1)) / math.sqrt((B2 + k * k * (1 - B2)) / (1 - B2))
+            self.assertTrue(close(no_reset, exact_no, rel=1e-6))
+            self.assertTrue(close(with_reset, exact_rel, rel=1e-6))
+        self.assertTrue(close(self.first_step_ratio(1e6, False), (1 - B1) / math.sqrt(1 - B2), rel=1e-4))
+        self.assertTrue(close(self.first_step_ratio(1e6, True), 1.0, rel=1e-4))
+
+
 class TestMixing(unittest.TestCase):
     def trained(self, n_steps=40):
         params, opt = make_adam()

@@ -117,4 +117,26 @@ decoupled state 개입 X ∈ {reset_m, reset_v, reset_both, mix} 각각에 대�
 
 ## 개정 이력
 
-- (없음)
+### 개정 1 — 2026-09-26 (스모크 결과와 선행연구 대조 **이후** 작성)
+
+투명성: 이 개정은 스모크 수치(`runs/p4_smoke_6e4cdaf/`)를 본 뒤에 작성했다. 각 변경은 비교군을 강화하는
+방향(보수적)이고, 효과의 방향을 근거로 한 변경은 없다. 원래 조항은 위에 그대로 남긴다.
+
+1. **튜닝 grid 가장자리 규칙 추가.** 스모크에서 Adam LR이 grid 최댓값(0.01), SGD LR이 grid 최솟값(0.01)으로
+   선택되어 두 baseline 모두 튜닝이 입증되지 않았다. 러너는 이제 `best_at_grid_edge`를 기록한다.
+   규칙: 선택값이 가장자리이면 grid를 3배 간격으로 한 칸 확장해 다시 튜닝하고, 이를 최대 2회 반복한다. 그래도
+   가장자리이면 `TUNING_INCOMPLETE`로 보고한다.
+   §9의 grid도 확장한다: Adam LR ∈ {3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 1e-1}, SGD LR ∈ {1e-3, 3e-3, 1e-2, 3e-2, 0.1, 0.3}.
+2. **Adam-Rel(`reset_t`) 비교군 추가.** Ellis et al. 2024의 step-counter-only reset이다. 선행 방법이므로 모든 state
+   개입과 같은 조건으로 비교한다 (구현: `interventions.py`, 테스트: `TestResetT`).
+3. **모든 state arm에 update-norm 일치 통제를 둔다.** 스모크에는 reset_both용 통제만 있었다. reset_m도 초기 update
+   norm을 약 2배로 키웠으나 이를 분리할 통제가 없었다. H2는 X ∈ {reset_m, reset_v, reset_both, reset_t, mix}
+   각각의 `keepdir_Xmag`로 평가한다.
+4. **plasticity loss 체제 확인을 선행 조건으로 둔다.** 스모크의 4개 과제에서는 keep_all의 과제별 최종 정확도가
+   하락하지 않았다. 과제별 AUC 하락은 직전 과제 head로부터의 음의 전이와 구분되지 않는다. 파일럿은 먼저 긴
+   스트림(≥ 50 과제, 입력 순열 또는 random teacher)에서 keep_all의 새 과제 성능이 fresh-init 대비 하락함을
+   보여야 한다. 보이지 못하면 §1의 범위 구분에 따라 "전환 적응"으로만 보고한다.
+5. **H8 예측 baseline 추가.** Wang et al. 2026의 optimization readiness(OR = S·R)와 effective rank, dead-unit
+   비율을 같은 평가로 비교한다. optimizer 상태 기반 예측자가 이들보다 나은지가 H8의 질문이다.
+6. **사전 기대 명시.** Lyle 2023 App. B.1(state-only reset 음성, toy RL)과 Ellis 2024(DQN에서 전체 reset이 기본
+   Adam보다 나쁨)는 H1 기각 쪽 증거다. 파일럿의 음성 결과도 같은 무게로 보고한다.
