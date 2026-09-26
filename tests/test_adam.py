@@ -262,6 +262,29 @@ class TestResetT(unittest.TestCase):
         self.assertTrue(close(self.first_step_ratio(1e6, True), 1.0, rel=1e-4))
 
 
+class TestResetTIsPerTensorRescaling(unittest.TestCase):
+    """reset_t keeps m and v, so every later update of a tensor is the keep_all update times
+    one scalar sqrt(1-b2^a_v)/(1-b1^a_m) (up to eps). Consequence (seen in p4_stage1): an
+    update-norm-matched keep_all control reproduces reset_t exactly; reset_t is a per-tensor
+    learning-rate schedule, not a change of update direction."""
+
+    def test_same_direction_as_keep_all(self):
+        pa, a = make_adam(n=6)
+        r = RNG(21)
+        for _ in range(3000):
+            step(pa, a, [r.gauss() for _ in range(6)])
+        pb, b = make_adam(n=6)
+        pb["w"].data = list(pa["w"].data)
+        b.load_state_dict(a.state_dict())
+        intervene(b, {"kind": "reset_t"})
+        for k in range(1, 30):
+            g = [r.gauss() for _ in range(6)]
+            da, db = a.compute_update({"w": list(g)})["w"], b.compute_update({"w": list(g)})["w"]
+            scale = math.sqrt(1 - B2 ** k) / (1 - B1 ** k) * (1 - B1 ** (3000 + k)) / math.sqrt(1 - B2 ** (3000 + k))
+            for x, y in zip(db, da):
+                self.assertTrue(close(x, scale * y, rel=1e-6))
+
+
 class TestMixing(unittest.TestCase):
     def trained(self, n_steps=40):
         params, opt = make_adam()

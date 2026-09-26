@@ -1,0 +1,102 @@
+# git: 0404c147bc962e7d3efd63b8f8b01a81e590eff1  interpreter: python3 (system)
+# cmd: OMP_NUM_THREADS=1 python3 -W error::ResourceWarning -W ignore::UserWarning -m unittest discover -s tests -t . -v
+# date_utc: 2026-09-26T16:01:36Z
+test_ages_equal_shared_counter_in_ordinary_training (tests.test_adam.TestAdamFormula.test_ages_equal_shared_counter_in_ordinary_training) ... ok
+test_constant_gradient_fresh (tests.test_adam.TestAdamFormula.test_constant_gradient_fresh) ... ok
+test_hand_computed_two_steps (tests.test_adam.TestAdamFormula.test_hand_computed_two_steps) ... ok
+test_matches_textbook_algorithm1 (tests.test_adam.TestAdamFormula.test_matches_textbook_algorithm1)
+Independent scalar transcription of Kingma & Ba Algorithm 1 (shared t). ... ok
+test_age_inverse (tests.test_adam.TestMixing.test_age_inverse) ... ok
+test_beta_switch_preserves_ema_weight (tests.test_adam.TestMixing.test_beta_switch_preserves_ema_weight) ... ok
+test_decoupled_mix_preserves_bias_corrected_moments (tests.test_adam.TestMixing.test_decoupled_mix_preserves_bias_corrected_moments) ... ok
+test_interventions_do_not_mutate_input (tests.test_adam.TestMixing.test_interventions_do_not_mutate_input) ... ok
+test_mix_with_reference_state (tests.test_adam.TestMixing.test_mix_with_reference_state) ... ok
+test_rejects_bad_specs (tests.test_adam.TestMixing.test_rejects_bad_specs) ... ok
+test_rho_one_is_keep_and_rho_zero_is_reset (tests.test_adam.TestMixing.test_rho_one_is_keep_and_rho_zero_is_reset) ... ok
+test_saturated_age (tests.test_adam.TestMixing.test_saturated_age) ... ok
+test_shared_keep_mix_scales_bias_corrected_moments (tests.test_adam.TestMixing.test_shared_keep_mix_scales_bias_corrected_moments) ... ok
+test_reset_artifacts_asymptotic_magnitude (tests.test_adam.TestResetBiasCorrection.test_reset_artifacts_asymptotic_magnitude)
+Long history (t >> 1/(1-b2)): first-step inflation -> 1/sqrt(1-b2) for reset_v and ... ok
+test_reset_both_decoupled_equals_fresh_adam (tests.test_adam.TestResetBiasCorrection.test_reset_both_decoupled_equals_fresh_adam) ... ok
+test_reset_both_shared_keep_first_step (tests.test_adam.TestResetBiasCorrection.test_reset_both_shared_keep_first_step) ... ok
+test_reset_m_decoupled_is_exactly_corrected (tests.test_adam.TestResetBiasCorrection.test_reset_m_decoupled_is_exactly_corrected) ... ok
+test_reset_m_shared_keep_under_corrects (tests.test_adam.TestResetBiasCorrection.test_reset_m_shared_keep_under_corrects) ... ok
+test_reset_m_shared_reset_overcorrects_kept_v (tests.test_adam.TestResetBiasCorrection.test_reset_m_shared_reset_overcorrects_kept_v)
+Resetting the shared counter makes the kept v's correction ~1/(1-b2) too large. ... ok
+test_reset_v_decoupled_is_exactly_corrected (tests.test_adam.TestResetBiasCorrection.test_reset_v_decoupled_is_exactly_corrected) ... ok
+test_reset_v_shared_keep_inflates_update (tests.test_adam.TestResetBiasCorrection.test_reset_v_shared_keep_inflates_update)
+Zeroing v but keeping the counter blows the step up by ~1/sqrt(1-b2) ~ 31.6x. ... ok
+test_ellis_thm31_and_eq4_limits (tests.test_adam.TestResetT.test_ellis_thm31_and_eq4_limits) ... ok
+test_first_step_formula (tests.test_adam.TestResetT.test_first_step_formula) ... ok
+test_torch_style_momentum_and_reset (tests.test_adam.TestSGD.test_torch_style_momentum_and_reset) ... ok
+test_checkpoint_does_not_perturb_trajectory (tests.test_branching.TestCheckpoint.test_checkpoint_does_not_perturb_trajectory) ... ok
+test_interventions_keep_batches_and_masks_paired_but_change_trajectory (tests.test_branching.TestCheckpoint.test_interventions_keep_batches_and_masks_paired_but_change_trajectory) ... ok
+test_roundtrip_and_independence (tests.test_branching.TestCheckpoint.test_roundtrip_and_independence) ... ok
+test_sibling_keep_all_branches_are_bit_identical (tests.test_branching.TestCheckpoint.test_sibling_keep_all_branches_are_bit_identical) ... ok
+test_training_leaves_global_random_untouched (tests.test_branching.TestCheckpoint.test_training_leaves_global_random_untouched) ... ok
+test_all_state_only_interventions_pass (tests.test_branching.TestStateOnlyInvariance.test_all_state_only_interventions_pass) ... ok
+test_check_has_no_side_effects (tests.test_branching.TestStateOnlyInvariance.test_check_has_no_side_effects) ... ok
+test_detects_buffer_change (tests.test_branching.TestStateOnlyInvariance.test_detects_buffer_change) ... ok
+test_detects_data_rng_advance (tests.test_branching.TestStateOnlyInvariance.test_detects_data_rng_advance) ... ok
+test_detects_dropout_rng_advance (tests.test_branching.TestStateOnlyInvariance.test_detects_dropout_rng_advance) ... ok
+test_detects_step_change (tests.test_branching.TestStateOnlyInvariance.test_detects_step_change) ... ok
+test_detects_tiny_weight_change (tests.test_branching.TestStateOnlyInvariance.test_detects_tiny_weight_change) ... ok
+test_detects_weight_change (tests.test_branching.TestStateOnlyInvariance.test_detects_weight_change) ... ok
+test_hyperparameter_change_is_not_state_only (tests.test_branching.TestStateOnlyInvariance.test_hyperparameter_change_is_not_state_only) ... ok
+test_eval_forward_is_pure (tests.test_model.TestBatchNormBuffers.test_eval_forward_is_pure) ... ok
+test_running_stats_follow_torch_convention (tests.test_model.TestBatchNormBuffers.test_running_stats_follow_torch_convention) ... ok
+test_update_buffers_false_leaves_buffers (tests.test_model.TestBatchNormBuffers.test_update_buffers_false_leaves_buffers) ... ok
+test_eval_consumes_no_rng_and_train_is_deterministic (tests.test_model.TestDropout.test_eval_consumes_no_rng_and_train_is_deterministic) ... ok
+test_train_dropout_requires_randomness_source (tests.test_model.TestDropout.test_train_dropout_requires_randomness_source) ... ok
+test_bn_eval (tests.test_model.TestGradients.test_bn_eval) ... ok
+test_bn_train_dropout (tests.test_model.TestGradients.test_bn_train_dropout) ... ok
+test_no_norm_no_dropout (tests.test_model.TestGradients.test_no_norm_no_dropout) ... ok
+test_no_norm_train (tests.test_model.TestGradients.test_no_norm_train) ... ok
+test_flags_min_and_max_only (tests.test_runner.TestGridEdges.test_flags_min_and_max_only) ... ok
+test_recorded_in_manifest (tests.test_runner.TestGridEdges.test_recorded_in_manifest) ... ok
+test_completed_and_all_arms_pass (tests.test_runner.TestRunnerEndToEnd.test_completed_and_all_arms_pass) ... ok
+test_integrity_checks_pass (tests.test_runner.TestRunnerEndToEnd.test_integrity_checks_pass) ... ok
+test_lr_bump_scales_first_update_exactly (tests.test_runner.TestRunnerEndToEnd.test_lr_bump_scales_first_update_exactly) ... ok
+test_norm_matching_reproduces_reference_norms (tests.test_runner.TestRunnerEndToEnd.test_norm_matching_reproduces_reference_norms) ... ok
+test_outputs_exist_and_manifest_fields (tests.test_runner.TestRunnerEndToEnd.test_outputs_exist_and_manifest_fields) ... ok
+test_paired_deltas_zero_for_keep_all_and_replay (tests.test_runner.TestRunnerEndToEnd.test_paired_deltas_zero_for_keep_all_and_replay) ... ok
+test_periodic_arm_fires_without_oracle (tests.test_runner.TestRunnerEndToEnd.test_periodic_arm_fires_without_oracle) ... ok
+test_state_only_checks_recorded (tests.test_runner.TestRunnerEndToEnd.test_state_only_checks_recorded) ... ok
+test_tuning_used_dev_seeds_only (tests.test_runner.TestRunnerEndToEnd.test_tuning_used_dev_seeds_only) ... ok
+test_arm_failure_is_preserved (tests.test_runner.TestValidationAndFailures.test_arm_failure_is_preserved) ... ok
+test_rejects_forward_reference (tests.test_runner.TestValidationAndFailures.test_rejects_forward_reference) ... ok
+test_rejects_misaligned_eval (tests.test_runner.TestValidationAndFailures.test_rejects_misaligned_eval) ... ok
+test_rejects_test_seeds_outside_test_split (tests.test_runner.TestValidationAndFailures.test_rejects_test_seeds_outside_test_split) ... ok
+test_rejects_tuning_on_test_seeds (tests.test_runner.TestValidationAndFailures.test_rejects_tuning_on_test_seeds) ... ok
+test_requires_keep_all (tests.test_runner.TestValidationAndFailures.test_requires_keep_all) ... ok
+test_resource_cap_is_recorded_as_failure_not_pass (tests.test_runner.TestValidationAndFailures.test_resource_cap_is_recorded_as_failure_not_pass) ... ok
+test_exhausted_budget_gives_not_run_and_incomplete (tests.test_stage1.TestBudget.test_exhausted_budget_gives_not_run_and_incomplete) ... ok
+test_intervention_rule (tests.test_stage1.TestDecisionRules.test_intervention_rule) ... ok
+test_phenomenon_rule (tests.test_stage1.TestDecisionRules.test_phenomenon_rule) ... ok
+test_interventions_run_and_pair (tests.test_stage1.TestForcedInterventionStage.test_interventions_run_and_pair) ... ok
+test_completed_with_manifest_fields (tests.test_stage1.TestStage1EndToEnd.test_completed_with_manifest_fields) ... ok
+test_every_cell_has_a_status (tests.test_stage1.TestStage1EndToEnd.test_every_cell_has_a_status) ... ok
+test_intervention_stage_consistent_with_phenomenon (tests.test_stage1.TestStage1EndToEnd.test_intervention_stage_consistent_with_phenomenon) ... ok
+test_phenomenon_cells_paired (tests.test_stage1.TestStage1EndToEnd.test_phenomenon_cells_paired) ... ok
+test_repeated_permutation_rejected (tests.test_stage1.TestTaskOverride.test_repeated_permutation_rejected) ... ok
+test_train_step_task_override (tests.test_stage1.TestTaskOverride.test_train_step_task_override) ... ok
+test_check_seeds (tests.test_stream.TestSplits.test_check_seeds) ... ok
+test_disjoint (tests.test_stream.TestSplits.test_disjoint) ... ok
+test_classes_are_all_used (tests.test_stream.TestStream.test_classes_are_all_used) ... ok
+test_deterministic_and_seed_dependent (tests.test_stream.TestStream.test_deterministic_and_seed_dependent) ... ok
+test_eval_sets_independent_of_training_rng (tests.test_stream.TestStream.test_eval_sets_independent_of_training_rng) ... ok
+test_label_permutation_relabels_same_partition (tests.test_stream.TestStream.test_label_permutation_relabels_same_partition) ... ok
+test_random_teacher_tasks_differ (tests.test_stream.TestStream.test_random_teacher_tasks_differ) ... ok
+test_task_schedule_and_oracle (tests.test_stream.TestStream.test_task_schedule_and_oracle) ... ok
+test_decoupled_single_moment_and_mix_have_no_stock_equivalent (tests.test_torch_parity.TestAdamTraceParity.test_decoupled_single_moment_and_mix_have_no_stock_equivalent) ... skipped 'torch not installed (SKIP is not PASS)'
+test_other_fixed_betas (tests.test_torch_parity.TestAdamTraceParity.test_other_fixed_betas) ... skipped 'torch not installed (SKIP is not PASS)'
+test_stock_equivalents (tests.test_torch_parity.TestAdamTraceParity.test_stock_equivalents) ... skipped 'torch not installed (SKIP is not PASS)'
+test_vanilla_trace (tests.test_torch_parity.TestAdamTraceParity.test_vanilla_trace) ... skipped 'torch not installed (SKIP is not PASS)'
+test_forward_backward_and_buffers (tests.test_torch_parity.TestModelParity.test_forward_backward_and_buffers) ... skipped 'torch not installed (SKIP is not PASS)'
+
+----------------------------------------------------------------------
+Ran 88 tests in 4.922s
+
+OK (skipped=5)
+# exit: 0
+# wall_seconds: 5.00  child_cpu_s: 4.97  child_peak_rss_kb: 26236

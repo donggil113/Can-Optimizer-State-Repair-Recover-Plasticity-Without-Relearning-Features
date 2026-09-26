@@ -1,0 +1,221 @@
+{
+  "base_family": "adam",
+  "condition_count_note": "Exactly two conditions fixed before running; no length/model sweep.",
+  "conditions": [
+    {
+      "basis": "existing smoke stream family and model; length from PREREGISTRATION amendment 1-4 (>= 50 tasks)",
+      "family": "random_teacher",
+      "n_classes": 4,
+      "name": "random_teacher_c4"
+    },
+    {
+      "basis": "existing label_permutation family; 10 classes because with 4 classes only 24 permutations exist and 50 tasks would repeat them, so the probe task would not be new. Runtime assertion: probe permutation never trained.",
+      "family": "label_permutation",
+      "n_classes": 10,
+      "name": "label_permutation_c10"
+    }
+  ],
+  "cost_model": {
+    "planned_cpu_s": "tuning <= 60 trunks (1860) + phenomenon 6 x 37 (222) + interventions 6 x 22 (132) + secondary 12 x 37 (444) = ~2660",
+    "probe_cpu_s": 2.0,
+    "step_cpu_s": 0.0029,
+    "trunk_cpu_s": 31.0
+  },
+  "decision": {
+    "intervention": "Per correctly-corrected X in primary: effect present iff mean (X - keep_all) probe_auc_acc >= 0.02 and all seeds > 0. DIFFERENCE_REMAINS iff effect present AND |mean (X - keepdir_Xmag)| >= 0.02 with all seeds the same sign. Else EXPLAINED_BY_UPDATE_NORM or NO_POSITIVE_EFFECT_OVER_KEEP_ALL. Any DIFFERENCE_REMAINS -> MECHANISM_PILOT_CANDIDATE (scope: this synthetic setting, oracle timing); else STATE_REPAIR_BRANCH_ON_HOLD. With n=3, no difference is NOT equivalence.",
+    "mie_acc": 0.02,
+    "not_claimed": "Weights move after the intervention, so no 'without relearning features' claim is made; CKA/parameter movement are descriptive only.",
+    "phenomenon": "Per condition, base family: ESTABLISHED iff mean over 3 test seeds of (late - early) probe_auc_acc <= -0.02 AND all 3 seed differences < 0. Missing/failed cells or base tuning not RESOLVED -> INCOMPLETE. Otherwise NOT_ESTABLISHED (= not observed in this setting; not evidence of absence)."
+  },
+  "interventions": {
+    "arms": [
+      {
+        "intervention": {
+          "kind": "keep_all"
+        },
+        "name": "keep_all"
+      },
+      {
+        "intervention": {
+          "counter": "decoupled",
+          "kind": "reset_m"
+        },
+        "name": "reset_m"
+      },
+      {
+        "intervention": {
+          "counter": "decoupled",
+          "kind": "reset_v"
+        },
+        "name": "reset_v"
+      },
+      {
+        "intervention": {
+          "counter": "decoupled",
+          "kind": "reset_both"
+        },
+        "name": "reset_both"
+      },
+      {
+        "intervention": {
+          "kind": "reset_t"
+        },
+        "name": "reset_t"
+      },
+      {
+        "intervention": {
+          "kind": "keep_all"
+        },
+        "name": "keepdir_reset_mmag",
+        "norm_match_reference": "reset_m"
+      },
+      {
+        "intervention": {
+          "kind": "keep_all"
+        },
+        "name": "keepdir_reset_vmag",
+        "norm_match_reference": "reset_v"
+      },
+      {
+        "intervention": {
+          "kind": "keep_all"
+        },
+        "name": "keepdir_reset_bothmag",
+        "norm_match_reference": "reset_both"
+      },
+      {
+        "intervention": {
+          "kind": "keep_all"
+        },
+        "name": "keepdir_reset_tmag",
+        "norm_match_reference": "reset_t"
+      },
+      {
+        "intervention": {
+          "counter": "shared_keep",
+          "kind": "reset_v"
+        },
+        "name": "reset_v__shared_keep"
+      },
+      {
+        "intervention": {
+          "counter": "shared_keep",
+          "kind": "reset_both"
+        },
+        "name": "reset_both__shared_keep"
+      }
+    ],
+    "artifacts": [
+      "reset_v__shared_keep",
+      "reset_both__shared_keep"
+    ],
+    "information_access": "All arms: current probe batch labels + ORACLE timing (intervention at the end of the training stream, i.e. at a known boundary). keepdir_* (coupled controls): additionally read the per-step, per-tensor update norms of the referenced arm's full probe run (privileged, requires running that arm first: +1 probe run of compute each). Not deployable methods.",
+    "primary": [
+      "reset_m",
+      "reset_v",
+      "reset_both",
+      "reset_t"
+    ],
+    "start": "the same late checkpoint (with probe RNG) as the phenomenon 'late' probe; keep_all must reproduce that probe bitwise"
+  },
+  "model": {
+    "bn_eps": 1e-05,
+    "bn_momentum": 0.1,
+    "dropout": 0.1,
+    "hidden": 32,
+    "norm": "batchnorm"
+  },
+  "name": "p4_stage1",
+  "probe": {
+    "early_window": 50,
+    "eval_every": 10,
+    "probe_size": 64,
+    "protocol": "Fixed probe task = stream task index n_train_tasks (never trained). Starting points: fresh (same initial weights, fresh optimizer), early (end of task 0, carried optimizer state), late (end of task 49, carried optimizer state). Probe data/dropout RNG replaced by derive_seed('probe', stream, seed) for every starting point: identical batches, masks and update budget.",
+    "steps": 200
+  },
+  "question": "Is there a loss of learning ability on a comparable new task? If so, is a correctly bias-corrected optimizer-state intervention distinguishable from its update-magnitude effect?",
+  "resource_caps": {
+    "max_cpu_seconds": 3600,
+    "max_rss_gib": 3.0,
+    "note": "3600 s is the whole-step cap; 200 s reserved for parity/unit tests and timing probes run outside this process (measured separately). Install/download cost recorded separately in runs/install/.",
+    "os_cpu_grace_seconds": 60,
+    "reserved_cpu_seconds": 200,
+    "threads": 1,
+    "workers": 1
+  },
+  "secondary_families": [
+    "adam_eqbeta",
+    "sgd"
+  ],
+  "seeds": {
+    "dev": [
+      1000,
+      1001
+    ],
+    "note": "test = first 3 seeds of the original test split, as allowed; dev = first 2 of the dev split (budget).",
+    "test": [
+      3000,
+      3001,
+      3002
+    ]
+  },
+  "status_note": "Exploratory diagnostic. Test seeds 3000-3002 were already viewed in p4_smoke_6e4cdaf (first 4 random_teacher tasks share teachers), so they are development data now; this is NOT a confirmatory experiment. All intervention timings are a pre-specified ORACLE boundary (end of the training stream).",
+  "stream_common": {
+    "batch_size": 16,
+    "eval_size": 256,
+    "in_dim": 16,
+    "n_train_tasks": 50,
+    "steps_per_task": 200
+  },
+  "tuning": {
+    "edge_extension": {
+      "cost_bound": "at most 1 extra LR x 2 dev seeds x 2 conditions = 4 trunks (~124 CPU s) per family",
+      "factor": 3.0,
+      "rule": "Same rule for every family: if the selected LR is the min or max of the grid, add ONE value (min/3 or max*3) on that side, run it on the same dev seeds, reselect. At most one extension. If the selection is still at an edge -> TUNING_UNRESOLVED (no further extension)."
+    },
+    "families": {
+      "adam": {
+        "base": {
+          "beta1": 0.9,
+          "beta2": 0.999,
+          "eps": 1e-08,
+          "kind": "adam"
+        },
+        "lr_grid": [
+          0.001,
+          0.003,
+          0.01,
+          0.03
+        ]
+      },
+      "adam_eqbeta": {
+        "base": {
+          "beta1": 0.9,
+          "beta2": 0.9,
+          "eps": 1e-08,
+          "kind": "adam"
+        },
+        "lr_grid": [
+          0.001,
+          0.003,
+          0.01,
+          0.03
+        ]
+      },
+      "sgd": {
+        "base": {
+          "kind": "sgd",
+          "momentum": 0.9
+        },
+        "lr_grid": [
+          0.003,
+          0.01,
+          0.03,
+          0.1
+        ]
+      }
+    },
+    "objective": "online training accuracy averaged over all steps of the 50-task stream (online accuracy as in Dohare et al. 2024); higher is better; ties -> earliest grid entry",
+    "split": "dev"
+  }
+}

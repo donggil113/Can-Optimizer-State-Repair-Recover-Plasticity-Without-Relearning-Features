@@ -1,13 +1,38 @@
-# STATUS — P4 (2026-09-26)
+# STATUS — P4 (최종 갱신 2026-09-26, Stage 1 이후)
 
 ## 판정
 
 | 구분 | 상태 |
 |---|---|
-| 소프트웨어 | **TECHNICAL_TEST_PASS**: unittest 73/73 통과. 스모크 1회 COMPLETED. 18개 arm × 3 seed 모두 PASS. 매 seed의 paired 무결성 검사 PASS |
-| 과학 | **SCIENCE_NOT_EVALUATED**: 연구 질문의 어떤 가설도 검정하지 않음 |
-| 파일럿 준비 | **NOT_READY_FOR_PILOT**: 아래 "파일럿 전 필요 작업" 참조. 이 판정은 신규성이나 채택 가능성과 무관하다 |
-| torch 백엔드 | **BLOCKED / NOT_RUN**: torch 미설치, 설치 미승인 |
+| 소프트웨어 | **TECHNICAL_TEST_PASS**: unittest 89개. `.venv`에서는 89/89 통과·skip 0. 시스템 Python에서는 torch parity 5개가 SKIP(PASS 아님) |
+| torch parity | **PASS**: MLP forward/grad/BN, vanilla Adam weight/m/v/update/step trace. 최대 상대 차이 ≤ 3.6e-11 |
+| 과학 (Stage 1) | **STATE_REPAIR_BRANCH_ON_HOLD**: 두 합성 조건에서 학습 능력 저하는 관측(ESTABLISHED)됐다. 올바르게 보정한 state 개입은 keep_all 대비 양의 효과가 없거나, update 크기(norm 일치 통제)로 설명됐다. 범위: 합성 2조건, oracle timing, seed 3 (이미 열람한 개발 seed) |
+| 파일럿 준비 | **NOT_READY_FOR_PILOT** (유지) |
+
+Stage 1 상세는 [`docs/STAGE1_REPORT.md`](docs/STAGE1_REPORT.md), 원자료는 `runs/p4_stage1_0404c14/`.
+
+## Stage 1 요약 (2026-09-26)
+
+- 질문: 비교 가능한 새 과제에서 학습 능력 저하가 실제로 있는가? 있다면 올바른 optimizer-state 개입의 효과가
+  update 크기 효과와 구분되는가?
+- 설정 `configs/p4_stage1.json`은 실행 전에 커밋했다 (commit `0404c14`).
+  - 조건 2개: random_teacher C=4, label_permutation C=10. C=10은 4-class 순열 반복 문제 때문이다.
+  - 과제 50개 × 200 step, 고정 probe 과제.
+  - 시작점 fresh / early / late가 같은 batch, mask, 예산을 쓴다.
+  - dev 튜닝, 경계 확장은 1회만 허용.
+- 결과 (probe AUC late − early):
+  - RT −0.245, LP −0.204. 모든 seed 음수 → ESTABLISHED.
+  - late 가중치에 새 Adam 상태를 줘도 회복되지 않는다 (reset_both ≈ keep_all).
+  - reset_m은 RT에서 +0.021이지만, norm 일치 통제와의 차이는 +0.012 < MIE → update 크기로 설명.
+  - reset_t는 per-tensor LR 재조정과 같다 (norm 일치 통제와 정확히 같음, 구조적).
+  - 올바르게 보정한 reset_v는 m̂/√v̂가 폭증해 성능이 크게 나빠졌다.
+  - 가장 큰 이득은 오보정 artifact(reset_both/shared_keep, +0.33/+0.25)였다. update가 6–8배로 커지며,
+    저하가 유효 step 크기에 민감하다는 기술적 관찰이다 (원인은 검정하지 않음).
+- 개입 이후 가중치가 갱신되므로 "without relearning features"를 주장하지 않는다.
+- 이 저장소의 제목 질문은 현재 설정에서 **지지되지 않았다**. 다만 이는 "state repair 불가능"이 아니다
+  (seed 3, 합성, oracle).
+
+## (이전) 1단계 기록 — 2026-09-26 초판
 
 ## 이번 단계에서 한 일 (지시 1–6 대응)
 
@@ -94,7 +119,14 @@ paired Δ(arm − keep_all), `new_task_auc_acc`, 평균 [최소, 최대]:
   모든 branch arm은 adam_lr 튜닝 비용을 공유한다.
 - norm 일치 arm은 다른 arm의 궤적(step별 norm)을 추가로 쓴다. 이는 특권 정보이며 배치 가능한 방법이 아니다.
 
-## Blocker
+## Blocker (Stage 1 이후 갱신)
+
+- 해소: torch를 저장소 전용 `.venv`에 설치했다. 공식 CPU index, 29.4 s, 목록은 `requirements-venv.lock.txt`.
+  시스템 Python과 전역 설정은 바꾸지 않았다. torch parity는 PASS.
+- 남음: 이 환경에서 pure-Python 모델은 step당 약 2.8 ms로 작은 MLP에 한정된다. torch 백엔드 러너는 없다.
+- 남음: 실제 데이터 없음 (승인 범위 밖).
+
+### (이전 기록) 초판 blocker
 
 1. **numpy / torch / pytest 없음.** `python3 -c "import torch"` 결과는 `ModuleNotFoundError`. 설치는 승인 범위
    밖이라 하지 않았다. 그래서 전체를 표준 라이브러리로 구현했다. 순수 Python이라 모델 규모는 작은 MLP로

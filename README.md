@@ -1,6 +1,6 @@
 # P4 — Can Optimizer-State Repair Recover Plasticity Without Relearning Features?
 
-현재 상태는 [`STATUS.md`](STATUS.md)를 먼저 볼 것. 요약: **TECHNICAL_TEST_PASS + SCIENCE_NOT_EVALUATED**.
+현재 상태는 [`STATUS.md`](STATUS.md)를 먼저 볼 것. 요약: **TECHNICAL_TEST_PASS**, Stage 1 과학 판정 **STATE_REPAIR_BRANCH_ON_HOLD** ([`docs/STAGE1_REPORT.md`](docs/STAGE1_REPORT.md)).
 
 이 저장소는 "가중치를 건드리지 않고 optimizer 상태(Adam의 m, v, bias-correction age)만 수정하는 개입"의 효과를
 **같은 checkpoint에서 갈라진 paired branch**로 비교하기 위한 최소 러너와 테스트를 담고 있다.
@@ -9,15 +9,18 @@
 
 ## 실행 환경
 
-- Python 3.11 **표준 라이브러리만** 사용. numpy/torch/pytest는 이 환경에 없고, 설치는 승인되지 않아 하지 않았다.
-- CPU 단일 프로세스.
+- 실험 코드는 Python 3.11 **표준 라이브러리만** 사용한다.
+- torch는 parity 테스트 전용으로 저장소 `.venv`에만 설치했다 (`requirements-venv.lock.txt`, git 제외).
+- CPU 단일 프로세스, thread 1개.
 
 ## 명령
 
 ```bash
 python3 -m osrepair.cli env                                  # 환경 정보
-python3 -W error::ResourceWarning -m unittest discover -s tests -t . -v   # 테스트 (73개, ~3초)
-python3 -m osrepair.cli run --config configs/p4_smoke.json --out runs    # 스모크 (~수 분)
+OMP_NUM_THREADS=1 .venv/bin/python -W error::ResourceWarning -W ignore::UserWarning -m unittest discover -s tests -t . -v  # 89개 (torch parity 포함)
+python3 -W error::ResourceWarning -m unittest discover -s tests -t . -v   # 시스템 Python: torch parity 5개 SKIP (PASS 아님)
+python3 -m osrepair.cli run --config configs/p4_smoke.json --out runs    # 스모크 (~5분)
+OMP_NUM_THREADS=1 python3 -m osrepair.stage1 --config configs/p4_stage1.json --out runs/<id>  # Stage 1 (~35분 CPU)
 ```
 
 ## 구조
@@ -30,8 +33,10 @@ python3 -m osrepair.cli run --config configs/p4_smoke.json --out runs    # 스�
 | `osrepair/trainer.py` | 전체 상태 snapshot·restore·branch, state-only 검증기, 진단 지표 |
 | `osrepair/stream.py` | 합성 과제 스트림, dev/calibration/test seed 분할, oracle boundary 접근자 |
 | `osrepair/runner.py` | dev 튜닝 → trunk → checkpoint → paired arms → 무결성 검사 → 로그·manifest |
+| `osrepair/stage1.py` | Stage 1: fresh/early/late probe, late checkpoint 개입 + norm 일치 통제, CPU/RSS 상한 |
 | `configs/p4_smoke.json` | 스모크 설정 (모든 arm의 timing과 정보 접근 명시) |
-| `tests/` | 73개 unittest |
+| `configs/p4_stage1.json` | Stage 1 설정 (실행 전 고정) |
+| `tests/` | 89개 unittest (torch parity 5개는 `.venv`에서만 실행) |
 | `runs/` | 실행 산출물 (raw log, manifest, summary) |
 
 ## 핵심 설계

@@ -41,3 +41,19 @@
 - 선행연구 수식 확인: 하위 에이전트가 옮긴 Ellis et al. Thm 3.1 수식이 처음에는 극한과 맞지 않아 보였다. arXiv HTML
   원문을 직접 확인한 결과, t가 "전환 이후 step 수"이고 이력 길이는 t′→∞였다. 에이전트의 전사는 정확했고,
   테스트 docstring에 정의를 명시했다.
+
+## Stage 1 (2026-09-26, 같은 도구)
+
+- AI가 작성한 것:
+  - `.venv` 설치: 공식 PyTorch CPU index, 설치 로그 `runs/install/`.
+  - `tests/test_torch_parity.py`, `osrepair/stage1.py`, `configs/p4_stage1.json`, `tests/test_stage1.py`,
+    reset_t 항등식 테스트, `docs/STAGE1_REPORT.md`, STATUS 갱신.
+- Stage 1에서는 하위 에이전트와 웹 조회를 쓰지 않았다.
+- AI가 스스로 발견·수정한 것:
+  - `label_permutation`을 4-class로 두면 순열이 24개뿐이라 50개 과제에서 반복되고, probe 과제가 새 과제가 아니게
+    된다. 실행 전에 발견해 C=10으로 고정했고, 런타임 검사를 추가했다.
+  - 개입 경로 테스트가 tiny grid에서 SKIP됐다. skip은 PASS가 아니므로, 단계 함수를 직접 호출하는 테스트로 바꿨다.
+  - reset_t와 norm 일치 통제의 차이가 정확히 0으로 나왔다. 버그 가능성을 먼저 의심해 원로그를 확인했고,
+    첫 step 비율 0.3162 = √(1−β2)/(1−β1)로 구조적 항등식임을 확인한 뒤 회귀 테스트로 고정했다.
+- 사람이 검토할 것: `docs/STAGE1_REPORT.md`의 해석, 특히 오보정 artifact 이득을 "유효 step 크기 민감성"으로만
+  기술한 부분. 원인은 검정하지 않았다.
