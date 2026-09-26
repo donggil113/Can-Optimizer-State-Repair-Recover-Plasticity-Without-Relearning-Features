@@ -1,0 +1,44 @@
+\section{Introduction}
+\label{sec:intro}
+
+Networks trained on long sequences of tasks can lose the ability to learn new ones
+\citep{dohare2024loss,lyle2023understanding}. Adam \citep{kingma2015adam} is a recurring suspect: its
+second-moment estimate adapts slowly after an abrupt change, producing unusually large or unusually small
+updates \citep{lyle2023understanding,dohare2024loss,ellis2024adam}. This has motivated interventions that
+act only on the optimizer state, leaving the weights untouched: resetting both moments and the counter at
+known boundaries \citep{asadi2023resetting}, resetting only the step counter \citep{ellis2024adam}, or
+carrying and mixing second moments across tasks \citep{kang2024continual}.
+
+An intervention on Adam's state changes the magnitude of the next updates as well as their direction.
+If an intervention helps, the benefit may therefore come from ``repairing'' stale statistics or simply
+from taking larger (or smaller) steps. \citet{ellis2024adam} already note that their counter reset
+behaves like learning-rate annealing or warm-up. We ask a narrower diagnostic question:
+\emph{in a setting where a loss of learning ability is actually observed on a comparable new task, does a
+correctly bias-corrected optimizer-state intervention help beyond what matching its update scale explains?}
+
+We answer it in a deliberately small, fully instrumented setting. All branches start from one checkpoint,
+see the same batches and dropout masks, and are checked to differ from the untouched checkpoint only in
+optimizer state at the moment of intervention. Each intervention is paired with an update-norm control
+that uses its own optimizer state for the direction and the intervention's per-step, per-tensor norms
+for the magnitude. Our findings are:
+
+\begin{itemize}
+\item \textbf{The phenomenon is present in our setting.} On two synthetic 50-task streams, the late
+network's probe learning-curve area is lower than the early network's by \RTLateMinusEarlyAuc{}
+(random teacher) and \LPLateMinusEarlyAuc{} (label permutation), with every seed negative
+(Section~\ref{sec:phenomenon}).
+\item \textbf{We found no support for a benefit of correctly corrected state-only interventions beyond
+update scale.} A fresh optimizer state on the late weights did not recover the gap. The only intervention
+with a consistent positive difference to \keep{}, resetting the first moment, exceeded its
+update-norm control by less than our minimum interesting effect (Section~\ref{sec:interventions}).
+This is absence of support at three seeds, not evidence of zero effect.
+\item \textbf{The algebra of counter and moment policies explains two of the observations}
+(Section~\ref{sec:analysis}). With $\eps=0$ a counter-only reset rescales every coordinate of a tensor
+by the same factor, so it is a learning-rate schedule. With $\eps>0$ this equivalence is only
+approximate. Exact bias correction of a reset second moment does not bound the update, because the kept
+first moment can be large where the current gradient is small. These are elementary consequences of the
+Adam update, stated for clarity rather than as new results.
+\end{itemize}
+
+We do not propose a new optimizer, do not claim to restore plasticity, and do not claim that features
+stay fixed. The weights of every branch are updated after the intervention.

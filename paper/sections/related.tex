@@ -1,0 +1,36 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Loss of plasticity.}
+\citet{dohare2024loss} document a loss of learning ability across many tasks. They report that Adam with
+default $\beta$ values worsens it relative to SGD, and they track dead units, weight magnitude and
+effective rank. \citet{lyle2023understanding} show that such diagnostics change the sign of their
+correlation with plasticity across settings, and they relate plasticity loss to curvature.
+\citet{lyle2024disentangling} separate pre-activation shift from parameter-norm growth.
+\citet{wang2026predicting} predict trainability from gradient statistics rather than rank measures.
+Their probe discards the Adam state, and no optimizer statistic is among their predictors. Remedies that
+act on the weights include regenerative regularisation \citep{kumar2024maintaining}, soft parameter
+resets \citep{galashov2024nonstationary} and paired fast/slow networks \citep{lee2024slow}.
+\citet{klein2024plasticity} survey the reinforcement-learning literature.
+
+\paragraph{Optimizer state under non-stationarity.}
+\citet{lyle2023understanding} attribute large post-shift updates to $\hat m$ adapting faster than
+$\hat v$, and mitigate them with a larger $\eps$ and a smaller $\beta_2$. In a toy reinforcement-learning
+setting they report that resetting only the optimizer state did not improve plasticity.
+\citet{dohare2024loss} use $\beta_1=\beta_2$ in reinforcement learning. \citet{lyle2024disentangling}
+show one example in which resetting Adam before a new task reduces dead units.
+\citet{asadi2023resetting} reset $m$, $v$ and the counter at every target-network update and find the
+second moment responsible for most of the gain. \citet{ellis2024adam} reset only the counter and derive
+the post-shift update magnitude with and without this reset. They report that a full reset was worse
+than plain Adam in their DQN experiments, and they relate their method to learning-rate schedules.
+\citet{kang2024continual} study resetting, carrying and averaging $m$ and $v$ separately, with forgetting
+as the focus. \citet{hernandezgarcia2026scale} reset the optimizer and restart warm-up as a
+\emph{control} to separate weight-level plasticity loss from stale state. \citet{sahu2026adapt} bound
+the tracking error of Adam and SGD under drift.
+
+\paragraph{Position of this draft.}
+Everything above is prior work: the observation that optimizer state matters, the individual reset
+variants, and the algebra of update magnitude after a gradient shift. Within the sources we checked, we
+did not find a paired comparison of these variants against per-step update-norm controls on a probe task
+with an observed loss of learning ability. That comparison is the only thing this draft adds. It is a
+small diagnostic, not a new method.

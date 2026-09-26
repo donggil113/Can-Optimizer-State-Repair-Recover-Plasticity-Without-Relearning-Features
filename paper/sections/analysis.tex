@@ -1,0 +1,77 @@
+\section{Analysis: Moment and Counter Policies}
+\label{sec:analysis}
+
+We write out the Adam update in a form that separates moment values from counters. Everything in this
+section follows directly from the update rule of \citet{kingma2015adam}. We state it to fix precisely
+what the interventions and controls do. It is not a new result.
+
+\paragraph{Update with per-moment counters.}
+Let $a_s=1-\beta_1^{s}$ and $b_s=1-\beta_2^{s}$. After the moment update with gradient $g$, let $m,v$
+be the (post-gradient) moments. Standard Adam uses one counter $s$ for both moments. We allow separate
+counters $s_m,s_v$, which coincide in ordinary training. The update of coordinate $i$ is
+\begin{equation}
+u_i \;=\; -\alpha\,\frac{m_i/a_{s_m}}{\sqrt{v_i/b_{s_v}}+\eps}
+      \;=\; -\alpha\,\frac{\sqrt{b_{s_v}}}{a_{s_m}}\cdot\frac{m_i}{\sqrt{v_i}+\eps\sqrt{b_{s_v}}}.
+\label{eq:update}
+\end{equation}
+This assumes $\eps$ is added to $\sqrt{\hat v}$, as in Algorithm~1 of \citet{kingma2015adam} and in
+\texttt{torch.optim.Adam}, and not the rescaled $\hat\eps$ variant. It also assumes no weight decay (L2 or
+decoupled), no AMSGrad, fixed $\beta_1,\beta_2,\alpha$, and exact arithmetic. Our implementation matches
+\texttt{torch.optim.Adam} under these options (Appendix~\ref{app:checks}). Under a \emph{decoupled}
+policy, a reset moment restarts its own counter at 0, so $1-\beta^{s}$ equals the EMA weight that moment
+actually carries. Under \emph{shared-keep}, the counter is not changed. This is what zeroing
+\texttt{exp\_avg\_sq} alone does in PyTorch.
+
+\paragraph{Counter changes with equal moments.}
+Consider two optimizer states with the same post-gradient moments $m,v$ and counters $t$ and $r$ (both
+moments sharing each counter). For a coordinate with $v_i>0$, Eq.~\eqref{eq:update} gives
+\begin{equation}
+\frac{u^{(r)}_i}{u^{(t)}_i}
+ \;=\; \kappa(r,t)\cdot\frac{\sqrt{v_i}+\eps\sqrt{b_t}}{\sqrt{v_i}+\eps\sqrt{b_r}},
+\qquad
+\kappa(r,t)=\frac{\sqrt{b_r}\,a_t}{a_r\sqrt{b_t}} .
+\label{eq:ratio}
+\end{equation}
+If $\eps=0$, the ratio equals $\kappa(r,t)$ for every coordinate with $v_i>0$. Coordinates with
+$v_i=0$ have received only zero gradients, so $m_i=0$ and both updates vanish. Hence, \emph{when
+$\eps=0$}, changing the counter while keeping the moments multiplies the whole update by one scalar.
+Our counters are shared by all tensors, so the scalar is also shared by all tensors. For $r=1$ and
+$t\to\infty$, $\kappa\to\sqrt{1-\beta_2}/(1-\beta_1)$, which is $\approx0.316$ for $(0.9,0.999)$. For
+finite $t$ the extra factor $a_t/\sqrt{b_t}$ applies, so $0.316$ is an approximation, not an identity.
+If $\eps>0$, the second factor of Eq.~\eqref{eq:ratio} depends on $v_i$. It moves from $\kappa(r,t)$
+when $\sqrt{v_i}\gg\eps$ to $a_t/a_r$ when $\sqrt{v_i}\ll\eps\sqrt{b_r}$. The scalar equivalence
+therefore breaks for coordinates whose gradient scale is comparable to $\eps$
+(Appendix~\ref{app:counterexample}).
+
+\paragraph{Consequences for three arms.}
+\emph{(i) \texttt{reset\_t}.} The counter reset leaves the moment recursions unchanged. If $\eps=0$,
+induction over steps (equal weights $\Rightarrow$ equal gradients $\Rightarrow$ equal moments) shows that
+\texttt{reset\_t} is \keep{} run with the deterministic learning-rate multiplier
+$\kappa(k,t{+}k)$ at the $k$-th step after the reset. A per-tensor update-norm control that uses \keep's
+own direction then reproduces \texttt{reset\_t} exactly in exact arithmetic. For this arm the control is
+the same algorithm, not an independent test.
+\emph{(ii) Shared-keep artifacts.} After \texttt{reset\_both}, the shared-keep and decoupled branches
+start from the same zero moments and differ only in their counters ($t{+}k$ versus $k$). If $\eps=0$,
+the shared-keep arm is therefore fresh-state Adam with the multiplier $\rho_k=1/\kappa(k,t{+}k)$. The
+same holds for \texttt{reset\_v}, with the whole-update multiplier $\sqrt{b_{t+k}/b_k}$. These
+identities describe the algorithms. Whether the empirical gain of an artifact arm is explained by its
+schedule would require a learning-rate-matched run, which we did not perform.
+\emph{(iii) What remains.} Under $\eps=0$, counter policies differ from one another only by learning-rate
+schedules. Anything beyond scale must come from changing moment \emph{values}, as in \texttt{reset\_m},
+\texttt{reset\_v} and \texttt{reset\_both}. This is what the update-norm controls test.
+
+\paragraph{Exact correction does not bound the update.}
+After a decoupled \texttt{reset\_v}, the first step has $\hat v_i=g_i^2$ exactly, while the kept first
+moment gives $\hat m_i=(\beta_1 m_i^{\text{old}}+(1-\beta_1)g_i)/a_{t+1}$. Hence
+\begin{equation}
+|u_i| \;=\; \alpha\,\frac{|\hat m_i|}{|g_i|+\eps},
+\label{eq:resetv}
+\end{equation}
+which is unbounded as $|g_i|/|\hat m_i|\to0$ and is capped only by $\alpha|\hat m_i|/\eps$. The
+correction is exact, since $\hat v$ is unbiased for a stationary $g^2$, but $\hat v$ now rests on a single
+sample. The familiar bound $|u_i|\lesssim\alpha(1-\beta_1)/\sqrt{1-\beta_2}$ \citep{kingma2015adam}
+presumes that both moments start from zero together, and it no longer applies. Accuracy of the bias
+correction and stability of the update are separate properties. For example, coordinates of a unit whose
+current gradient is (near) zero but whose old momentum is not would receive very large steps. Our logs
+store only per-tensor norms, so we cannot attribute the observed blow-up to particular coordinates
+(\textsc{checkpoint\_trace\_unavailable}; Section~\ref{sec:interventions}).

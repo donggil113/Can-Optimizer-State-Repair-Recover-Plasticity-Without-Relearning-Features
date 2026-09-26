@@ -1,0 +1,112 @@
+\section{Experiments and Observations}
+\label{sec:results}
+
+All numbers are means over the three test seeds, with the per-seed range in brackets. They are
+descriptive; with three seeds we report neither significance tests nor equivalence.
+
+\subsection{A loss of learning ability on a comparable new task}
+\label{sec:phenomenon}
+
+\begin{table}[t]
+\caption{Probe AUC (mean held-out probe accuracy over 200 steps) from three starting points, base Adam.
+Differences are late minus early, per seed paired; brackets give the seed range.}
+\label{tab:phenomenon}
+\centering\small
+\input{tables/tab_phenomenon.tex}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.48\linewidth, height=4.2cm, title={random-teacher ($C{=}4$)}, xlabel={probe step},
+  ylabel={held-out probe acc.}, ymin=0, ymax=1, legend pos=south east, legend style={font=\scriptsize},
+  tick label style={font=\scriptsize}, label style={font=\small}, title style={font=\small}]
+\addplot[thick, black] table[x=k, y=mean] {figures/curve_RT_fresh.dat}; \addlegendentry{fresh}
+\addplot[thick, blue, dashed] table[x=k, y=mean] {figures/curve_RT_early.dat}; \addlegendentry{early}
+\addplot[thick, red, dotted] table[x=k, y=mean] {figures/curve_RT_late.dat}; \addlegendentry{late}
+\end{axis}
+\end{tikzpicture}\hfill
+\begin{tikzpicture}
+\begin{axis}[width=0.48\linewidth, height=4.2cm, title={label-permutation ($C{=}10$)}, xlabel={probe step},
+  ymin=0, ymax=1, tick label style={font=\scriptsize}, label style={font=\small}, title style={font=\small}]
+\addplot[thick, black] table[x=k, y=mean] {figures/curve_LP_fresh.dat};
+\addplot[thick, blue, dashed] table[x=k, y=mean] {figures/curve_LP_early.dat};
+\addplot[thick, red, dotted] table[x=k, y=mean] {figures/curve_LP_late.dat};
+\end{axis}
+\end{tikzpicture}
+\caption{Learning curves on the same never-trained probe task from the fresh, early (after task 0) and
+late (after task 49) starting points, with identical batches, dropout masks and update budget (mean of
+three seeds; per-seed curves are in \texttt{paper/figures/*.dat}).}
+\label{fig:curves}
+\end{figure}
+
+Table~\ref{tab:phenomenon} and Figure~\ref{fig:curves} show that the late network learns the probe task
+more slowly and to a lower final accuracy than the early network, in both conditions and on every seed.
+The late-minus-early AUC is \RTLateMinusEarlyAuc{} [\RTLateMinusEarlyAucMin, \RTLateMinusEarlyAucMax]
+for random-teacher and \LPLateMinusEarlyAuc{} [\LPLateMinusEarlyAucMin, \LPLateMinusEarlyAucMax] for
+label-permutation. The first-50-step accuracy differs by \RTLateMinusEarlyEarlyAcc{} and
+\LPLateMinusEarlyEarlyAcc{}. By the pre-declared rule the phenomenon is established in both conditions.
+The early network is itself slightly worse than fresh (\RTEarlyMinusFreshAuc{} and
+\LPEarlyMinusFreshAuc{}). The fresh comparison reflects the effect of past training on the weights
+together with a fresh optimizer. It is a diagnostic reference, not a state-only comparison. The gap also
+appears with the separately tuned $\beta_1{=}\beta_2{=}0.9$ Adam (\RTAdamEqBetaLateMinusEarlyAuc{},
+\LPAdamEqBetaLateMinusEarlyAuc{}) and SGD with momentum (\RTSgdLateMinusEarlyAuc{},
+\LPSgdLateMinusEarlyAuc{}). In this setting it is therefore not specific to Adam's default $\beta$ values.
+
+\subsection{State-only interventions from the late checkpoint}
+\label{sec:interventions}
+
+\begin{table}[t]
+\caption{Interventions on the late checkpoint. $\Delta$: probe-AUC difference to \keep{} and to the
+intervention's update-norm control, mean [seed range]. $\bar{\|u\|}_{1:10}$: mean update norm over the
+first 10 probe steps. $^\dagger$Mis-corrected artifact controls (counter not reset), not candidate methods.}
+\label{tab:interventions}
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\input{tables/tab_interventions.tex}
+\end{table}
+
+Table~\ref{tab:interventions} summarises the intervention branches. \keep{} reproduces the late probe of
+Section~\ref{sec:phenomenon} bit for bit, and all branches received identical batches and masks.
+
+\textbf{A fresh optimizer state does not recover the gap.} \texttt{reset\_both} with decoupled counters
+is the same algorithm as re-creating \texttt{torch.optim.Adam} (Appendix~\ref{app:checks}). Its
+difference to \keep{} is \RTResetBothVsKeep{} and \LPResetBothVsKeep{}, far smaller in magnitude than
+the late-minus-early gap. In this setting, therefore, the loss of learning ability is not explained by
+stale optimizer state alone.
+
+\textbf{First-moment reset: no support for benefit beyond update scale.} \texttt{reset\_m} is the only
+correctly corrected intervention with a positive difference to \keep{} on every seed:
+\RTResetMVsKeep{} [\RTResetMVsKeepMin, \RTResetMVsKeepMax] (random-teacher, which meets the effect
+criterion) and \LPResetMVsKeep{} [\LPResetMVsKeepMin, \LPResetMVsKeepMax] (label-permutation, which does
+not). It also roughly doubles the early update norm (\RTResetMUpdTen{} versus \RTKeepAllUpdTen{}).
+Against its update-norm control the difference shrinks to \RTResetMVsCtrl{}
+[\RTResetMVsCtrlMin, \RTResetMVsCtrlMax] and \LPResetMVsCtrl{}, below the minimum interesting effect.
+We read this as \emph{no support for an additional benefit of at least 0.02} beyond matching the update
+scale. The random-teacher residual is positive on all three seeds, so we do not claim that it is zero or
+that the two arms are equivalent.
+
+\textbf{Counter-only reset slows learning, as its schedule predicts.} \texttt{reset\_t} lowers AUC by
+\RTResetTVsKeep{} and \LPResetTVsKeep{}, and its early update norm is \RTResetTUpdTen{} versus \RTKeepAllUpdTen{} (random-teacher).
+Consistent with Section~\ref{sec:analysis}(i), its difference to the update-norm control is
+\RTResetTVsCtrl{} in the exported table on every seed. Appendix~\ref{app:trace} checks the precision of
+this difference against the raw logs.
+
+\textbf{Exactly corrected second-moment reset is unstable.} \texttt{reset\_v} raises the mean
+first-10-step update norm from \RTKeepAllUpdTen{} to \RTResetVUpdTen{} (random-teacher) and from
+\LPKeepAllUpdTen{} to \LPResetVUpdTen{} (label-permutation), and it lowers AUC by \RTResetVVsKeep{} and
+\LPResetVVsKeep{}. This is the behaviour Eq.~\eqref{eq:resetv} allows. We could not verify at the
+coordinate level that near-zero gradients cause it, because per-coordinate traces were not stored.
+
+\textbf{The largest gains come from a mis-corrected artifact.} \texttt{reset\_both} with the counter
+left unchanged improves AUC by \RTResetBothSharedKeepVsKeep{} and \LPResetBothSharedKeepVsKeep{}. This
+exceeds the late-minus-early gap in random-teacher. Its early update norm is \RTResetBothSharedKeepUpdTen{}
+versus \RTKeepAllUpdTen{}. By Section~\ref{sec:analysis}(ii), under $\eps=0$ this arm is fresh-state Adam
+with a deterministic learning-rate multiplier. We did not run a learning-rate-matched control, so we do
+not attribute its empirical gain entirely to the learning rate. The observation does show that, in this
+setting, the late network's probe learning is highly sensitive to update scale.
+
+\textbf{Descriptive statistics.} All branches update their weights after the intervention. Relative
+parameter movement, CKA of hidden features to the starting point, and the accuracy drop on task 49
+(Appendix~\ref{app:descriptive}) vary with update scale. For example, the artifact arm moves the
+parameters most and has the lowest CKA. We use these only as descriptions, not as evidence that features
+were or were not relearned.

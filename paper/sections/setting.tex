@@ -1,0 +1,65 @@
+\section{Problem and Experimental Setting}
+\label{sec:setting}
+
+\paragraph{Streams.}
+Inputs are $x\sim\mathcal N(0,I_{16})$. We use two conditions, both fixed before running.
+In \emph{random-teacher} ($C{=}4$ classes), task $k$ labels $x$ by $\arg\max_c (W_k x)_c$ with an
+independent Gaussian teacher $W_k$. In \emph{label-permutation} ($C{=}10$), a single teacher is shared
+and task $k$ applies a random label permutation. We use 10 classes because with 4 classes only 24
+permutations exist, so a 50-task stream would repeat them and the probe task would not be new. A runtime
+check verifies that the probe permutation never occurs in training. Each stream has 50 training tasks of
+200 steps with batch size 16, and one additional task that is never trained in the stream and serves as
+the probe.
+
+\paragraph{Model and optimizers.}
+The model is a one-hidden-layer MLP (16--32--$C$) with BatchNorm (momentum 0.1), ReLU and dropout 0.1,
+trained with mean cross-entropy and no replay, regulariser or task identity. The base optimizer is Adam
+($\beta_1{=}0.9$, $\beta_2{=}0.999$, $\eps{=}10^{-8}$, no weight decay, no AMSGrad). Its learning rate is
+selected on two development seeds by online training accuracy over the whole stream, from
+$\{10^{-3},3{\cdot}10^{-3},10^{-2},3{\cdot}10^{-2}\}$. A single one-sided extension was allowed if the
+choice fell on a grid edge. The selected values were \RTTuneAdamLr{} (random teacher) and \LPTuneAdamLr{} (label permutation), both
+interior grid points. Adam with $\beta_1{=}\beta_2{=}0.9$ and SGD with momentum 0.9 were tuned in the same way and are
+reported as secondary families (Appendix~\ref{app:tuning}).
+
+\paragraph{Probe protocol.}
+From each starting point we train for 200 steps on the probe task and evaluate held-out probe accuracy
+every 10 steps. The three starting points are:
+\emph{fresh}, the initial weights of the stream run with a fresh optimizer;
+\emph{early}, the end of task~0 with its optimizer state; and
+\emph{late}, the end of task~49 with its optimizer state.
+All starting points replace their data and dropout random streams with the same probe streams, so they
+see identical batches and masks (checked by hashes). Because the probe task is the same for all starting
+points, task difficulty cancels in the late-versus-early comparison. The primary metric is
+\emph{probe AUC}, the mean held-out probe accuracy over the 20 evaluation points. We also report the
+first-50-step mean, final accuracy, and the accuracy drop on the starting point's last training task.
+
+\paragraph{Interventions and controls.}
+Each branch restores the late checkpoint and applies one intervention to the optimizer state.
+At the moment of intervention we verify bitwise that weights, BatchNorm buffers, random-number states,
+stream position, hyperparameters and train- and eval-mode outputs equal those of the untouched
+checkpoint. The interventions are:
+\keep;
+\texttt{reset\_m} ($m{\leftarrow}0$);
+\texttt{reset\_v} ($v{\leftarrow}0$);
+\texttt{reset\_both} (both moments);
+\texttt{reset\_t} (counter only, as in \citealp{ellis2024adam}); and
+two \emph{mis-corrected} artifact controls, \texttt{reset\_v} and \texttt{reset\_both} with the counter
+left unchanged (``shared-keep'').
+The first three resets use per-moment counters (Section~\ref{sec:analysis}). For every primary
+intervention $X$, the \emph{update-norm control} \texttt{keepdir\_$X$mag} keeps the untouched optimizer
+state and computes its own update. At each step it rescales that update, tensor by tensor, to the norm
+that $X$'s branch applied at the same step. The control therefore needs a completed run of $X$ first
+(one extra 200-step probe) and reads privileged per-step norms. It is a diagnostic, not a deployable
+method. All interventions are applied at a pre-specified oracle boundary, the end of the stream. This is
+not a boundary-free or online method.
+
+\paragraph{Decision rules (fixed before running).}
+The minimum interesting effect is 0.02 probe AUC.
+The phenomenon is \emph{established} for a condition if the mean late-minus-early AUC is at most $-0.02$
+and every seed is negative.
+An intervention $X$ has an \emph{effect} if its mean difference to \keep{} is at least $0.02$ and every
+seed is positive. A \emph{difference remains} if, in addition, $|X-\texttt{keepdir\_}X\texttt{mag}|$
+is at least $0.02$ on average with a consistent sign across seeds.
+We use three test seeds (3000--3002). These seeds were already inspected in an earlier smoke run, so
+this is an exploratory study, not a confirmatory one. The run used \RunCpuSeconds{}\,s of CPU under a
+\RunCpuCap{}\,s cap and passed all \RunCellsTotal{} planned cells (code \texttt{\RunCommit}).

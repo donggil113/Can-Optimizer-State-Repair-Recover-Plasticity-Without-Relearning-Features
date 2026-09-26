@@ -1,0 +1,11 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We set out to separate optimizer-state interventions from their effect on update scale in a setting
+where the loss of learning ability is actually observed. The loss appears on both synthetic streams.
+Replacing the optimizer state with a fresh one does not recover it. The only correctly corrected
+intervention with a consistent positive difference does not exceed its update-norm control by our
+minimum interesting effect. The largest gains come from mis-corrected arms that take much larger steps.
+On this evidence we pause work on optimizer-state repair as a method in this setting. The draft is
+offered as a careful diagnostic of one small setting, with its algebra and controls made explicit, and
+not as evidence about optimizer-state repair in general.

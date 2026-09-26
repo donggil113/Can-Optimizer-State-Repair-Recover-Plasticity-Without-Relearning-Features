@@ -1,0 +1,35 @@
+\section{Discussion and Limitations}
+\label{sec:discussion}
+
+\paragraph{What the observations support.}
+In our setting there is a clear loss of learning ability on a comparable new task. A state-only
+intervention with exact bias correction did not produce a benefit that survives matching its update
+scale. The counter-only reset reduces, in the $\eps=0$ idealisation, to a learning-rate schedule. The
+largest improvements came from arms that take much larger steps. Taken together, these point toward
+update scale, not stale optimizer statistics, as the quantity to control first when asking whether
+state repair helps. We regard this as a hypothesis for further testing, not as a conclusion.
+
+\paragraph{What they do not support.}
+We do not claim that optimizer-state repair cannot restore plasticity, that the \texttt{reset\_m}
+residual is zero, or that the artifact arm's gain is entirely due to its learning rate. Non-significance
+at three seeds is not equivalence. We also make no claim about frozen or preserved features: every
+branch updates its weights, and CKA and parameter distance are descriptive only.
+
+\paragraph{Limitations.}
+\begin{itemize}
+\item \textbf{Oracle timing.} Every intervention is applied at a pre-specified task boundary. Nothing here
+evaluates a boundary-free or online trigger.
+\item \textbf{Objective mismatch.} Learning rates were tuned for online accuracy over the whole stream,
+while the probe metric is the learning speed on one new task from a late checkpoint. A learning rate
+tuned for the probe could shrink or remove the gap.
+\item \textbf{One probe task per condition and two synthetic conditions.} Tasks, checkpoints and arms
+are not independent replicates; the unit of replication is the seed.
+\item \textbf{Three previously inspected seeds.} Seeds 3000--3002 were used in an earlier smoke run, so
+this study is exploratory.
+\item \textbf{Small scale, no real data.} A 32-unit MLP trained in pure Python. We used no image or text
+benchmark and no pretrained weights.
+\item \textbf{Controls not run.} There is no learning-rate-matched control for the artifact arms, no
+probe-specific learning-rate tuning, and no coordinate-level traces (Appendix~\ref{app:planned}).
+\item \textbf{$\eps$.} The scalar equivalences of Section~\ref{sec:analysis} hold only with $\eps=0$.
+Their accuracy at $\eps=10^{-8}$ is checked only at the level of per-tensor norms in our logs.
+\end{itemize}

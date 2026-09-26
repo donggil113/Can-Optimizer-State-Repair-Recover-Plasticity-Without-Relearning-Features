@@ -1,0 +1,24 @@
+\subsection*{AI use statement}
+Generative AI (Claude Code, an AI coding agent) was used for most of this project:
+\begin{itemize}
+\item writing all experiment code and tests;
+\item running the experiments;
+\item checking prior work through web retrieval, with per-source verification levels recorded in the
+repository file \texttt{PRIOR\_ART.md};
+\item deriving the algebra of Section~\ref{sec:analysis};
+\item drafting this entire manuscript.
+\end{itemize}
+The AI agent verified the code with unit tests and with a numerical comparison against PyTorch. Every
+number in the text is generated from raw result files by a script. \textbf{No human author has yet
+reviewed the code, the analysis, the citations or this text (HUMAN\_REVIEW\_PENDING).} In particular,
+the citations have not been independently re-checked against the published versions. This statement will
+be revised once human review has taken place; the authors will then take responsibility for the final
+content.
+
+\subsection*{Reproducibility statement}
+The configuration was fixed and committed before the run (\texttt{configs/p4\_stage1.json}, sha256
+prefix \texttt{\RunConfigHash}; code \texttt{\RunCommit}, code hash \texttt{\RunCodeHash}). The run
+manifest records environment, CPU time, peak memory, per-cell status and data and checkpoint hashes. Raw
+logs contain per-step training records and per-evaluation probe records. Experiments use only the Python
+standard library and a single CPU thread. PyTorch is used only for parity tests. The exact commands are
+in \texttt{paper/BUILD.md} and \texttt{STATUS.md}.

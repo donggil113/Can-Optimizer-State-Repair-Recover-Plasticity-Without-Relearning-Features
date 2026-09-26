@@ -1,0 +1,251 @@
+macro	text	raw_value	source_file	field_path
+RunCpuSeconds	2,078	2078.2768064909997	runs/p4_stage1_0404c14/manifest.json	cpu_seconds_used
+RunWallSeconds	2,097	2096.813542989	runs/p4_stage1_0404c14/manifest.json	wall_seconds
+RunPeakRssMiB	29	29.1796875	runs/p4_stage1_0404c14/manifest.json	peak_rss_kb/1024
+RunCpuCap	3,600	3600	runs/p4_stage1_0404c14/manifest.json	limits_applied.RLIMIT_CPU_seconds[0]-60 (os grace)
+RunCellsTotal	72	72	runs/p4_stage1_0404c14/manifest.json	len(cells)
+RunCellsPass	72	72	runs/p4_stage1_0404c14/manifest.json	count(cells.status==PASS)
+RunCommit	0404c14	'0404c14'	runs/p4_stage1_0404c14/manifest.json	git.commit[:7]
+RunConfigHash	d9c2b7aceeeb	'd9c2b7aceeeb'	runs/p4_stage1_0404c14/manifest.json	config_sha256[:12]
+RunCodeHash	b45b507e4aef	'b45b507e4aef'	runs/p4_stage1_0404c14/manifest.json	code_sha256[:12]
+RTTuneAdamLr	0.003	0.003	runs/p4_stage1_0404c14/manifest.json	results.tuning.random_teacher_c4.adam.best.lr
+RTTuneAdamEqBetaLr	0.003	0.003	runs/p4_stage1_0404c14/manifest.json	results.tuning.random_teacher_c4.adam_eqbeta.best.lr
+RTTuneSgdLr	0.01	0.01	runs/p4_stage1_0404c14/manifest.json	results.tuning.random_teacher_c4.sgd.best.lr
+LPTuneAdamLr	0.003	0.003	runs/p4_stage1_0404c14/manifest.json	results.tuning.label_permutation_c10.adam.best.lr
+LPTuneAdamEqBetaLr	0.003	0.003	runs/p4_stage1_0404c14/manifest.json	results.tuning.label_permutation_c10.adam_eqbeta.best.lr
+LPTuneSgdLr	0.01	0.01	runs/p4_stage1_0404c14/manifest.json	results.tuning.label_permutation_c10.sgd.best.lr
+RTFreshAuc	0.788	0.7875651041666667	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.fresh.probe_auc_acc
+RTFreshEarlyAcc	0.553	0.5526041666666667	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.fresh.probe_early_acc
+RTFreshFinal	0.919	0.9192708333333334	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.fresh.probe_final_acc
+RTFreshUpdTen	0.048	0.047500651940889704	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.fresh.update_norm_first10
+RTEarlyAuc	0.727	0.7274739583333334	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.early.probe_auc_acc
+RTEarlyEarlyAcc	0.451	0.45104166666666673	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.early.probe_early_acc
+RTEarlyFinal	0.904	0.9036458333333334	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.early.probe_final_acc
+RTEarlyUpdTen	0.047	0.046726564402100816	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.early.update_norm_first10
+RTLateAuc	0.483	0.48287760416666664	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.late.probe_auc_acc
+RTLateEarlyAcc	0.274	0.27421875	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.late.probe_early_acc
+RTLateFinal	0.727	0.7265625	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.late.probe_final_acc
+RTLateUpdTen	0.031	0.03113290694273126	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.late.update_norm_first10
+RTLateMinusEarlyAuc	-0.245	-0.2445963541666666	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-early}.probe_auc_acc
+RTLateMinusEarlyAucMin	-0.315	-0.3146484375	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-early}.probe_auc_acc
+RTLateMinusEarlyAucMax	-0.198	-0.19843749999999993	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-early}.probe_auc_acc
+RTLateMinusEarlyEarlyAcc	-0.177	-0.1768229166666667	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-early}.probe_early_acc
+RTLateMinusEarlyEarlyAccMin	-0.218	-0.21796875	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-early}.probe_early_acc
+RTLateMinusEarlyEarlyAccMax	-0.154	-0.15390625000000002	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-early}.probe_early_acc
+RTLateMinusEarlyFinal	-0.177	-0.17708333333333334	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-early}.probe_final_acc
+RTLateMinusEarlyFinalMin	-0.258	-0.2578125	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-early}.probe_final_acc
+RTLateMinusEarlyFinalMax	-0.133	-0.1328125	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-early}.probe_final_acc
+RTLateMinusFreshAuc	-0.305	-0.3046875	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-fresh}.probe_auc_acc
+RTLateMinusFreshAucMin	-0.363	-0.3634765625	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-fresh}.probe_auc_acc
+RTLateMinusFreshAucMax	-0.261	-0.2607421875	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-fresh}.probe_auc_acc
+RTLateMinusFreshEarlyAcc	-0.278	-0.2783854166666666	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-fresh}.probe_early_acc
+RTLateMinusFreshEarlyAccMin	-0.298	-0.29765624999999996	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-fresh}.probe_early_acc
+RTLateMinusFreshEarlyAccMax	-0.265	-0.26484375	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-fresh}.probe_early_acc
+RTLateMinusFreshFinal	-0.193	-0.19270833333333334	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-fresh}.probe_final_acc
+RTLateMinusFreshFinalMin	-0.266	-0.265625	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-fresh}.probe_final_acc
+RTLateMinusFreshFinalMax	-0.137	-0.13671875	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{late-fresh}.probe_final_acc
+RTEarlyMinusFreshAuc	-0.060	-0.06009114583333338	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{early-fresh}.probe_auc_acc
+RTEarlyMinusFreshAucMin	-0.069	-0.06914062500000007	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{early-fresh}.probe_auc_acc
+RTEarlyMinusFreshAucMax	-0.049	-0.048828125	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{early-fresh}.probe_auc_acc
+RTEarlyMinusFreshEarlyAcc	-0.102	-0.10156249999999996	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{early-fresh}.probe_early_acc
+RTEarlyMinusFreshEarlyAccMin	-0.119	-0.11874999999999991	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{early-fresh}.probe_early_acc
+RTEarlyMinusFreshEarlyAccMax	-0.080	-0.07968749999999997	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{early-fresh}.probe_early_acc
+RTEarlyMinusFreshFinal	-0.016	-0.015625	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{early-fresh}.probe_final_acc
+RTEarlyMinusFreshFinalMin	-0.043	-0.04296875	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{early-fresh}.probe_final_acc
+RTEarlyMinusFreshFinalMax	+0.004	0.00390625	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.random_teacher_c4.adam.seeds[s].probes.{early-fresh}.probe_final_acc
+RTVerdict	ESTABLISHED	'ESTABLISHED'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.random_teacher_c4.phenomenon
+RTAdamEqBetaLateMinusEarlyAuc	-0.284	-0.2839192708333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.adam_eqbeta.seeds[s].probes.{late-early}.probe_auc_acc
+RTSgdLateMinusEarlyAuc	-0.354	-0.3541666666666667	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.random_teacher_c4.sgd.seeds[s].probes.{late-early}.probe_auc_acc
+LPFreshAuc	0.568	0.5684895833333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.fresh.probe_auc_acc
+LPFreshEarlyAcc	0.347	0.346875	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.fresh.probe_early_acc
+LPFreshFinal	0.760	0.7604166666666666	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.fresh.probe_final_acc
+LPFreshUpdTen	0.054	0.05362056430619467	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.fresh.update_norm_first10
+LPEarlyAuc	0.536	0.5360026041666667	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.early.probe_auc_acc
+LPEarlyEarlyAcc	0.254	0.25364583333333335	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.early.probe_early_acc
+LPEarlyFinal	0.728	0.7278645833333334	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.early.probe_final_acc
+LPEarlyUpdTen	0.044	0.044426597292927805	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.early.update_norm_first10
+LPLateAuc	0.332	0.3321614583333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.late.probe_auc_acc
+LPLateEarlyAcc	0.127	0.12734375	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.late.probe_early_acc
+LPLateFinal	0.526	0.5260416666666666	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.late.probe_final_acc
+LPLateUpdTen	0.035	0.03468903539818185	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.late.update_norm_first10
+LPLateMinusEarlyAuc	-0.204	-0.20384114583333335	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-early}.probe_auc_acc
+LPLateMinusEarlyAucMin	-0.282	-0.28242187500000004	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-early}.probe_auc_acc
+LPLateMinusEarlyAucMax	-0.151	-0.15117187499999996	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-early}.probe_auc_acc
+LPLateMinusEarlyEarlyAcc	-0.126	-0.12630208333333334	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-early}.probe_early_acc
+LPLateMinusEarlyEarlyAccMin	-0.269	-0.26875000000000004	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-early}.probe_early_acc
+LPLateMinusEarlyEarlyAccMax	+0.011	0.010937499999999989	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-early}.probe_early_acc
+LPLateMinusEarlyFinal	-0.202	-0.20182291666666666	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-early}.probe_final_acc
+LPLateMinusEarlyFinalMin	-0.246	-0.24609375	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-early}.probe_final_acc
+LPLateMinusEarlyFinalMax	-0.137	-0.13671875	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-early}.probe_final_acc
+LPLateMinusFreshAuc	-0.236	-0.236328125	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-fresh}.probe_auc_acc
+LPLateMinusFreshAucMin	-0.248	-0.24785156249999996	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-fresh}.probe_auc_acc
+LPLateMinusFreshAucMax	-0.226	-0.2255859375	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-fresh}.probe_auc_acc
+LPLateMinusFreshEarlyAcc	-0.220	-0.21953124999999998	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-fresh}.probe_early_acc
+LPLateMinusFreshEarlyAccMin	-0.277	-0.27734375	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-fresh}.probe_early_acc
+LPLateMinusFreshEarlyAccMax	-0.170	-0.17031249999999998	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-fresh}.probe_early_acc
+LPLateMinusFreshFinal	-0.234	-0.234375	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-fresh}.probe_final_acc
+LPLateMinusFreshFinalMin	-0.293	-0.29296875	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-fresh}.probe_final_acc
+LPLateMinusFreshFinalMax	-0.172	-0.171875	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{late-fresh}.probe_final_acc
+LPEarlyMinusFreshAuc	-0.032	-0.03248697916666665	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{early-fresh}.probe_auc_acc
+LPEarlyMinusFreshAucMin	-0.097	-0.0966796875	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{early-fresh}.probe_auc_acc
+LPEarlyMinusFreshAucMax	+0.047	0.046875	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{early-fresh}.probe_auc_acc
+LPEarlyMinusFreshEarlyAcc	-0.093	-0.09322916666666664	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{early-fresh}.probe_early_acc
+LPEarlyMinusFreshEarlyAccMin	-0.181	-0.18124999999999997	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{early-fresh}.probe_early_acc
+LPEarlyMinusFreshEarlyAccMax	+0.058	0.057812500000000044	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{early-fresh}.probe_early_acc
+LPEarlyMinusFreshFinal	-0.033	-0.032552083333333336	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{early-fresh}.probe_final_acc
+LPEarlyMinusFreshFinalMin	-0.047	-0.046875	runs/p4_stage1_0404c14/manifest.json	min_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{early-fresh}.probe_final_acc
+LPEarlyMinusFreshFinalMax	-0.016	-0.015625	runs/p4_stage1_0404c14/manifest.json	max_s results.phenomenon.label_permutation_c10.adam.seeds[s].probes.{early-fresh}.probe_final_acc
+LPVerdict	ESTABLISHED	'ESTABLISHED'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.label_permutation_c10.phenomenon
+LPAdamEqBetaLateMinusEarlyAuc	-0.283	-0.28268229166666664	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.adam_eqbeta.seeds[s].probes.{late-early}.probe_auc_acc
+LPSgdLateMinusEarlyAuc	-0.406	-0.4060546875	runs/p4_stage1_0404c14/manifest.json	mean_s results.phenomenon.label_permutation_c10.sgd.seeds[s].probes.{late-early}.probe_auc_acc
+RTKeepAllAuc	0.483	0.48287760416666664	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.keep_all.probe_auc_acc
+RTKeepAllVsKeep	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.{keep_all-keep_all}.probe_auc_acc
+RTKeepAllVsKeepMin	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.random_teacher_c4.seeds[s].probes.{keep_all-keep_all}.probe_auc_acc
+RTKeepAllVsKeepMax	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.random_teacher_c4.seeds[s].probes.{keep_all-keep_all}.probe_auc_acc
+RTKeepAllUpdTen	0.0311	0.03113290694273126	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.keep_all.update_norm_first10
+RTKeepAllTheta	0.38	0.38021527945447436	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.keep_all.theta_rel_change_end
+RTKeepAllCka	0.703	0.7032161377237244	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.keep_all.cka_to_start_end
+RTKeepAllForget	0.441	0.44140625	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.keep_all.old_task_forgetting
+RTResetMAuc	0.504	0.5035807291666666	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_m.probe_auc_acc
+RTResetMVsKeep	+0.021	0.02070312499999999	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_m-keep_all}.probe_auc_acc
+RTResetMVsKeepMin	+0.015	0.015039062499999978	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_m-keep_all}.probe_auc_acc
+RTResetMVsKeepMax	+0.032	0.03183593750000002	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_m-keep_all}.probe_auc_acc
+RTResetMUpdTen	0.0726	0.07258066828075954	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_m.update_norm_first10
+RTResetMTheta	0.391	0.39126405392117974	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_m.theta_rel_change_end
+RTResetMCka	0.689	0.6891989716485227	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_m.cka_to_start_end
+RTResetMForget	0.449	0.44921875	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_m.old_task_forgetting
+RTResetMVsCtrl	+0.012	0.012304687500000022	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_m-keepdir_reset_mmag}.probe_auc_acc
+RTResetMVsCtrlMin	+0.010	0.010351562500000022	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_m-keepdir_reset_mmag}.probe_auc_acc
+RTResetMVsCtrlMax	+0.015	0.015039062499999978	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_m-keepdir_reset_mmag}.probe_auc_acc
+RTResetMVerdict	EXPLAINED\_BY\_UPDATE\_NORM	'EXPLAINED\\_BY\\_UPDATE\\_NORM'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.random_teacher_c4.per_intervention.reset_m.verdict
+RTResetVAuc	0.331	0.33059895833333336	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_v.probe_auc_acc
+RTResetVVsKeep	-0.152	-0.15227864583333334	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_v-keep_all}.probe_auc_acc
+RTResetVVsKeepMin	-0.188	-0.18828125	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_v-keep_all}.probe_auc_acc
+RTResetVVsKeepMax	-0.087	-0.08749999999999997	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_v-keep_all}.probe_auc_acc
+RTResetVUpdTen	16.4	16.372868058737435	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_v.update_norm_first10
+RTResetVTheta	15.1	15.096651551753245	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_v.theta_rel_change_end
+RTResetVCka	0.351	0.3513903734518513	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_v.cka_to_start_end
+RTResetVForget	0.418	0.41796875	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_v.old_task_forgetting
+RTResetVVsCtrl	-0.020	-0.01953125000000001	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_v-keepdir_reset_vmag}.probe_auc_acc
+RTResetVVsCtrlMin	-0.060	-0.06035156250000001	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_v-keepdir_reset_vmag}.probe_auc_acc
+RTResetVVsCtrlMax	+0.056	0.056249999999999994	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_v-keepdir_reset_vmag}.probe_auc_acc
+RTResetVVerdict	NO\_POSITIVE\_EFFECT\_OVER\_KEEP\_ALL	'NO\\_POSITIVE\\_EFFECT\\_OVER\\_KEEP\\_ALL'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.random_teacher_c4.per_intervention.reset_v.verdict
+RTResetBothAuc	0.475	0.4752604166666667	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_both.probe_auc_acc
+RTResetBothVsKeep	-0.008	-0.007617187499999993	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_both-keep_all}.probe_auc_acc
+RTResetBothVsKeepMin	-0.049	-0.048632812499999956	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_both-keep_all}.probe_auc_acc
+RTResetBothVsKeepMax	+0.045	0.04531249999999998	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_both-keep_all}.probe_auc_acc
+RTResetBothUpdTen	0.049	0.049032910788327166	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_both.update_norm_first10
+RTResetBothTheta	0.448	0.4475789100603265	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_both.theta_rel_change_end
+RTResetBothCka	0.756	0.7555871542983889	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_both.cka_to_start_end
+RTResetBothForget	0.444	0.4440104166666667	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_both.old_task_forgetting
+RTResetBothVsCtrl	-0.027	-0.027408854166666646	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_both-keepdir_reset_bothmag}.probe_auc_acc
+RTResetBothVsCtrlMin	-0.058	-0.058398437499999956	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_both-keepdir_reset_bothmag}.probe_auc_acc
+RTResetBothVsCtrlMax	-0.011	-0.010546874999999956	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_both-keepdir_reset_bothmag}.probe_auc_acc
+RTResetBothVerdict	NO\_POSITIVE\_EFFECT\_OVER\_KEEP\_ALL	'NO\\_POSITIVE\\_EFFECT\\_OVER\\_KEEP\\_ALL'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.random_teacher_c4.per_intervention.reset_both.verdict
+RTResetTAuc	0.276	0.27578125000000003	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_t.probe_auc_acc
+RTResetTVsKeep	-0.207	-0.2070963541666667	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_t-keep_all}.probe_auc_acc
+RTResetTVsKeepMin	-0.255	-0.2552734375	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_t-keep_all}.probe_auc_acc
+RTResetTVsKeepMax	-0.183	-0.18261718750000006	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_t-keep_all}.probe_auc_acc
+RTResetTUpdTen	0.00572	0.0057180448161422886	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_t.update_norm_first10
+RTResetTTheta	0.169	0.16919477332442512	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_t.theta_rel_change_end
+RTResetTCka	0.925	0.9245086283355279	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_t.cka_to_start_end
+RTResetTForget	0.143	0.14322916666666666	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_t.old_task_forgetting
+RTResetTVsCtrl	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_t-keepdir_reset_tmag}.probe_auc_acc
+RTResetTVsCtrlMin	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_t-keepdir_reset_tmag}.probe_auc_acc
+RTResetTVsCtrlMax	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_t-keepdir_reset_tmag}.probe_auc_acc
+RTResetTVerdict	NO\_POSITIVE\_EFFECT\_OVER\_KEEP\_ALL	'NO\\_POSITIVE\\_EFFECT\\_OVER\\_KEEP\\_ALL'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.random_teacher_c4.per_intervention.reset_t.verdict
+RTResetVSharedKeepAuc	0.546	0.5456380208333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_v__shared_keep.probe_auc_acc
+RTResetVSharedKeepVsKeep	+0.063	0.06276041666666665	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_v__shared_keep-keep_all}.probe_auc_acc
+RTResetVSharedKeepVsKeepMin	-0.163	-0.1630859375	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_v__shared_keep-keep_all}.probe_auc_acc
+RTResetVSharedKeepVsKeepMax	+0.313	0.3134765625	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_v__shared_keep-keep_all}.probe_auc_acc
+RTResetVSharedKeepUpdTen	17.3	17.342169135732103	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_v__shared_keep.update_norm_first10
+RTResetVSharedKeepTheta	15.7	15.681984004191888	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_v__shared_keep.theta_rel_change_end
+RTResetVSharedKeepCka	0.294	0.29434339280459154	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_v__shared_keep.cka_to_start_end
+RTResetVSharedKeepForget	0.487	0.4869791666666667	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_v__shared_keep.old_task_forgetting
+RTResetBothSharedKeepAuc	0.816	0.8158854166666667	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_both__shared_keep.probe_auc_acc
+RTResetBothSharedKeepVsKeep	+0.333	0.3330078125	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_both__shared_keep-keep_all}.probe_auc_acc
+RTResetBothSharedKeepVsKeepMin	+0.268	0.26835937499999996	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_both__shared_keep-keep_all}.probe_auc_acc
+RTResetBothSharedKeepVsKeepMax	+0.410	0.40976562499999997	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.random_teacher_c4.seeds[s].probes.{reset_both__shared_keep-keep_all}.probe_auc_acc
+RTResetBothSharedKeepUpdTen	0.249	0.24930958515898918	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_both__shared_keep.update_norm_first10
+RTResetBothSharedKeepTheta	0.859	0.8588327670638506	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_both__shared_keep.theta_rel_change_end
+RTResetBothSharedKeepCka	0.471	0.4707277606421784	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_both__shared_keep.cka_to_start_end
+RTResetBothSharedKeepForget	0.538	0.5377604166666666	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.random_teacher_c4.seeds[s].probes.reset_both__shared_keep.old_task_forgetting
+RTInterventionStage	STATE\_REPAIR\_BRANCH\_ON\_HOLD	'STATE\\_REPAIR\\_BRANCH\\_ON\\_HOLD'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.random_teacher_c4.intervention_stage
+LPKeepAllAuc	0.332	0.3321614583333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.keep_all.probe_auc_acc
+LPKeepAllVsKeep	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.{keep_all-keep_all}.probe_auc_acc
+LPKeepAllVsKeepMin	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.label_permutation_c10.seeds[s].probes.{keep_all-keep_all}.probe_auc_acc
+LPKeepAllVsKeepMax	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.label_permutation_c10.seeds[s].probes.{keep_all-keep_all}.probe_auc_acc
+LPKeepAllUpdTen	0.0347	0.03468903539818185	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.keep_all.update_norm_first10
+LPKeepAllTheta	0.342	0.3417716384159159	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.keep_all.theta_rel_change_end
+LPKeepAllCka	0.773	0.7729394253884917	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.keep_all.cka_to_start_end
+LPKeepAllForget	0.398	0.3984375	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.keep_all.old_task_forgetting
+LPResetMAuc	0.352	0.3518880208333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_m.probe_auc_acc
+LPResetMVsKeep	+0.020	0.01972656249999999	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_m-keep_all}.probe_auc_acc
+LPResetMVsKeepMin	+0.012	0.011523437499999956	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_m-keep_all}.probe_auc_acc
+LPResetMVsKeepMax	+0.027	0.02734375	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_m-keep_all}.probe_auc_acc
+LPResetMUpdTen	0.0808	0.0807734850059816	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_m.update_norm_first10
+LPResetMTheta	0.349	0.3490247983546036	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_m.theta_rel_change_end
+LPResetMCka	0.786	0.7855478547913185	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_m.cka_to_start_end
+LPResetMForget	0.408	0.4075520833333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_m.old_task_forgetting
+LPResetMVsCtrl	+0.008	0.00755208333333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_m-keepdir_reset_mmag}.probe_auc_acc
+LPResetMVsCtrlMin	-0.005	-0.0048828125	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_m-keepdir_reset_mmag}.probe_auc_acc
+LPResetMVsCtrlMax	+0.021	0.02128906250000001	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_m-keepdir_reset_mmag}.probe_auc_acc
+LPResetMVerdict	NO\_POSITIVE\_EFFECT\_OVER\_KEEP\_ALL	'NO\\_POSITIVE\\_EFFECT\\_OVER\\_KEEP\\_ALL'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.label_permutation_c10.per_intervention.reset_m.verdict
+LPResetVAuc	0.088	0.08782552083333334	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_v.probe_auc_acc
+LPResetVVsKeep	-0.244	-0.24433593749999996	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_v-keep_all}.probe_auc_acc
+LPResetVVsKeepMin	-0.290	-0.2904296875	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_v-keep_all}.probe_auc_acc
+LPResetVVsKeepMax	-0.176	-0.17636718749999997	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_v-keep_all}.probe_auc_acc
+LPResetVUpdTen	330	330.19032701983343	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_v.update_norm_first10
+LPResetVTheta	274	273.68178880888735	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_v.theta_rel_change_end
+LPResetVCka	0.159	0.1592498334265118	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_v.cka_to_start_end
+LPResetVForget	0.365	0.3645833333333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_v.old_task_forgetting
+LPResetVVsCtrl	-0.048	-0.048372395833333325	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_v-keepdir_reset_vmag}.probe_auc_acc
+LPResetVVsCtrlMin	-0.081	-0.08124999999999999	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_v-keepdir_reset_vmag}.probe_auc_acc
+LPResetVVsCtrlMax	+0.013	0.012890625000000003	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_v-keepdir_reset_vmag}.probe_auc_acc
+LPResetVVerdict	NO\_POSITIVE\_EFFECT\_OVER\_KEEP\_ALL	'NO\\_POSITIVE\\_EFFECT\\_OVER\\_KEEP\\_ALL'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.label_permutation_c10.per_intervention.reset_v.verdict
+LPResetBothAuc	0.289	0.28932291666666665	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_both.probe_auc_acc
+LPResetBothVsKeep	-0.043	-0.042838541666666646	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_both-keep_all}.probe_auc_acc
+LPResetBothVsKeepMin	-0.063	-0.06328124999999996	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_both-keep_all}.probe_auc_acc
+LPResetBothVsKeepMax	-0.008	-0.007617187500000011	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_both-keep_all}.probe_auc_acc
+LPResetBothUpdTen	0.0403	0.04030688900460921	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_both.update_norm_first10
+LPResetBothTheta	0.386	0.3861620035960011	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_both.theta_rel_change_end
+LPResetBothCka	0.845	0.8449586578191464	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_both.cka_to_start_end
+LPResetBothForget	0.400	0.3997395833333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_both.old_task_forgetting
+LPResetBothVsCtrl	-0.030	-0.029882812499999994	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_both-keepdir_reset_bothmag}.probe_auc_acc
+LPResetBothVsCtrlMin	-0.050	-0.04999999999999999	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_both-keepdir_reset_bothmag}.probe_auc_acc
+LPResetBothVsCtrlMax	-0.016	-0.016015624999999978	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_both-keepdir_reset_bothmag}.probe_auc_acc
+LPResetBothVerdict	NO\_POSITIVE\_EFFECT\_OVER\_KEEP\_ALL	'NO\\_POSITIVE\\_EFFECT\\_OVER\\_KEEP\\_ALL'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.label_permutation_c10.per_intervention.reset_both.verdict
+LPResetTAuc	0.130	0.12955729166666666	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_t.probe_auc_acc
+LPResetTVsKeep	-0.203	-0.2026041666666667	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_t-keep_all}.probe_auc_acc
+LPResetTVsKeepMin	-0.244	-0.24394531249999998	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_t-keep_all}.probe_auc_acc
+LPResetTVsKeepMax	-0.130	-0.13027343750000003	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_t-keep_all}.probe_auc_acc
+LPResetTUpdTen	0.00632	0.006322408778670915	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_t.update_norm_first10
+LPResetTTheta	0.16	0.1597088007031874	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_t.theta_rel_change_end
+LPResetTCka	0.903	0.9025224821319585	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_t.cka_to_start_end
+LPResetTForget	0.109	0.109375	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_t.old_task_forgetting
+LPResetTVsCtrl	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_t-keepdir_reset_tmag}.probe_auc_acc
+LPResetTVsCtrlMin	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_t-keepdir_reset_tmag}.probe_auc_acc
+LPResetTVsCtrlMax	+0.000	0.0	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_t-keepdir_reset_tmag}.probe_auc_acc
+LPResetTVerdict	NO\_POSITIVE\_EFFECT\_OVER\_KEEP\_ALL	'NO\\_POSITIVE\\_EFFECT\\_OVER\\_KEEP\\_ALL'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.label_permutation_c10.per_intervention.reset_t.verdict
+LPResetVSharedKeepAuc	0.091	0.0908203125	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_v__shared_keep.probe_auc_acc
+LPResetVSharedKeepVsKeep	-0.241	-0.24134114583333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_v__shared_keep-keep_all}.probe_auc_acc
+LPResetVSharedKeepVsKeepMin	-0.287	-0.2875	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_v__shared_keep-keep_all}.probe_auc_acc
+LPResetVSharedKeepVsKeepMax	-0.171	-0.17109375	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_v__shared_keep-keep_all}.probe_auc_acc
+LPResetVSharedKeepUpdTen	331	330.9135075063689	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_v__shared_keep.update_norm_first10
+LPResetVSharedKeepTheta	273	273.48097340571496	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_v__shared_keep.theta_rel_change_end
+LPResetVSharedKeepCka	0.160	0.15987364160415876	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_v__shared_keep.cka_to_start_end
+LPResetVSharedKeepForget	0.368	0.3684895833333333	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_v__shared_keep.old_task_forgetting
+LPResetBothSharedKeepAuc	0.584	0.5836588541666666	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_both__shared_keep.probe_auc_acc
+LPResetBothSharedKeepVsKeep	+0.251	0.25149739583333336	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_both__shared_keep-keep_all}.probe_auc_acc
+LPResetBothSharedKeepVsKeepMin	+0.235	0.2353515625	runs/p4_stage1_0404c14/manifest.json	min_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_both__shared_keep-keep_all}.probe_auc_acc
+LPResetBothSharedKeepVsKeepMax	+0.273	0.27265625000000004	runs/p4_stage1_0404c14/manifest.json	max_s results.interventions.label_permutation_c10.seeds[s].probes.{reset_both__shared_keep-keep_all}.probe_auc_acc
+LPResetBothSharedKeepUpdTen	0.209	0.20920452128666497	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_both__shared_keep.update_norm_first10
+LPResetBothSharedKeepTheta	0.711	0.7106090992897601	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_both__shared_keep.theta_rel_change_end
+LPResetBothSharedKeepCka	0.723	0.7229155349744217	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_both__shared_keep.cka_to_start_end
+LPResetBothSharedKeepForget	0.426	0.42578125	runs/p4_stage1_0404c14/manifest.json	mean_s results.interventions.label_permutation_c10.seeds[s].probes.reset_both__shared_keep.old_task_forgetting
+LPInterventionStage	STATE\_REPAIR\_BRANCH\_ON\_HOLD	'STATE\\_REPAIR\\_BRANCH\\_ON\\_HOLD'	runs/p4_stage1_0404c14/manifest.json	results.verdicts.label_permutation_c10.intervention_stage
+OverallVerdict	STATE\_REPAIR\_BRANCH\_ON\_HOLD	'STATE\\_REPAIR\\_BRANCH\\_ON\\_HOLD'	runs/p4_stage1_0404c14/manifest.json	results.overall
+ParityW	1.7e-14	1.67e-14	runs/p4_stage1/torch_parity_measured.txt	vanilla Adam 400 steps max rel diff [w]
+ParityM	1.4e-13	1.41e-13	runs/p4_stage1/torch_parity_measured.txt	vanilla Adam 400 steps max rel diff [m]
+ParityV	3.9e-16	3.88e-16	runs/p4_stage1/torch_parity_measured.txt	vanilla Adam 400 steps max rel diff [v]
+ParityUpd	3.6e-11	3.56e-11	runs/p4_stage1/torch_parity_measured.txt	vanilla Adam 400 steps max rel diff [upd]

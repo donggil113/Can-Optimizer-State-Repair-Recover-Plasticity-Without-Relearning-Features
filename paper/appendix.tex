@@ -1,0 +1,62 @@
+\section{Implementation checks}
+\label{app:checks}
+The pure-Python Adam was compared with \texttt{torch.optim.Adam} (PyTorch 2.14.0, CPU, float64,
+\texttt{foreach}, \texttt{fused}, \texttt{capturable} and AMSGrad off, weight decay 0) on a 400-step
+gradient sequence. The maximum relative differences were \ParityW{} (weights), \ParityM{} ($m$),
+\ParityV{} ($v$) and \ParityUpd{} (updates), and the step counters were identical. Trace comparisons
+further show that the following hold within numerical tolerance:
+\begin{itemize}
+\item \texttt{reset\_both} with decoupled counters equals a newly constructed torch optimizer;
+\item \texttt{reset\_t} equals zeroing torch's \texttt{step};
+\item the shared-keep variants equal zeroing \texttt{exp\_avg}/\texttt{exp\_avg\_sq} alone.
+\end{itemize}
+Decoupled single-moment resets have no stock-PyTorch equivalent and are checked only against their
+explicit formulas. These are implementation checks, not proofs.
+
+\section{Counterexample to scalar counter equivalence with \texorpdfstring{$\eps>0$}{eps>0}}
+\label{app:counterexample}
+\textsc{Pending in draft v0}: a deterministic two-coordinate example is to be added (see
+\texttt{PAPER\_STATUS.md}).
+
+\section{Raw-trace precision of the \texttt{reset\_t} control}
+\label{app:trace}
+\textsc{Pending in draft v0}: the zero difference in Table~\ref{tab:interventions} is to be checked
+against raw per-step logs.
+
+\section{Tuning}
+\label{app:tuning}
+Online training accuracy on the development seeds (1000, 1001) for each learning rate. All selections
+were interior grid points, so no edge extension was used.
+\begin{center}\scriptsize
+\input{tables/tab_tuning.tex}
+\end{center}
+
+\section{Descriptive statistics of the intervention branches}
+\label{app:descriptive}
+Relative parameter change after 200 probe steps, linear CKA of hidden features to the starting point on
+64 fixed inputs, and accuracy drop on task 49 (mean of three seeds). These are descriptive only.
+\begin{center}\scriptsize\setlength{\tabcolsep}{3pt}
+\input{tables/tab_descriptive.tex}
+\end{center}
+
+\section{Planned experiments (NOT RUN)}
+\label{app:planned}
+None of the following has been run, and no result is implied:
+\begin{enumerate}
+\item a learning-rate-matched control for the shared-keep artifact arms, using the schedule of
+Section~\ref{sec:analysis}(ii);
+\item tuning the learning rate for the probe objective, to test whether the late-minus-early gap
+persists;
+\item more probe tasks per condition, fresh test seeds that have not been inspected, and a real-data
+stream;
+\item coordinate-level traces at the late checkpoint, to test the near-zero-gradient explanation of
+\texttt{reset\_v};
+\item any boundary-free trigger or predictor of intervention benefit (deliberately out of scope).
+\end{enumerate}
+
+\section{Correction history}
+\label{app:corrections}
+An earlier internal report (\texttt{docs/STAGE1\_REPORT.md}) stated that \texttt{reset\_t} equals a
+per-tensor learning-rate rescaling ``exactly'' and that the first-step ratio is 0.3162. Both statements
+are corrected here. The equivalence holds only for $\eps=0$ and coordinates with $v_i>0$, and 0.3162 is
+the $r=1$, $t\to\infty$ approximation of $\kappa(r,t)$ in Eq.~\eqref{eq:ratio}.

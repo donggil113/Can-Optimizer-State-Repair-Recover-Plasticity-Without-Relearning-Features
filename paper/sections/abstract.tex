@@ -1,0 +1,19 @@
+\begin{abstract}
+Resetting or rescaling Adam's moment estimates or its bias-correction counter has been proposed as an
+inexpensive remedy for the loss of learning ability under non-stationarity. Such optimizer-state
+interventions also change the size of subsequent updates, so their effect is confounded with update
+scale. We examine this confound in a small, fully paired synthetic setting. First, we observe the
+phenomenon: on two synthetic 50-task streams and three seeds, a network that has trained on the whole
+stream learns a fixed, never-seen probe task worse than the same network after its first task, with
+identical probe batches, dropout masks and update budget (difference in probe learning-curve area
+\RTLateMinusEarlyAuc{} and \LPLateMinusEarlyAuc{}). Second, from that late checkpoint we branch
+state-only interventions with exact per-moment bias correction and compare each to a control that keeps
+the original optimizer state but copies the intervention's per-step, per-tensor update norms. No
+correctly bias-corrected intervention exceeded its update-norm control by our pre-declared minimum
+interesting effect of $0.02$. Replacing the optimizer state by a fresh one did not recover the gap;
+resetting only the counter is, with $\eps=0$, a per-tensor learning-rate schedule; and resetting only the
+second moment produced very large updates despite exact bias correction. The largest gains came from a
+deliberately mis-corrected reset with several-fold larger updates, for which no learning-rate-matched
+control was run. These are observations under oracle intervention timing, one probe task per condition,
+three previously inspected seeds and no real data; they do not show that optimizer-state repair cannot help.
+\end{abstract}

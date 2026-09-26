@@ -1,0 +1,51 @@
+% Working draft v0. Built with the UNMODIFIED official ICLR 2027 style files
+% (paper/iclr_style_official/, sha256 in SHA256SUMS). Anonymous mode: \iclrfinalcopy is NOT set.
+% INTERNAL WORKING DRAFT -- NOT SUBMITTED. The "Under review" running header is produced by the
+% official style in anonymous mode and does not reflect a submission.
+\documentclass{article}
+\usepackage{iclr2027_conference,times}
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+
+\input{tables/numbers.tex}
+\newcommand{\eps}{\epsilon}
+\newcommand{\keep}{\texttt{keep\_all}}
+
+\title{Separating Optimizer-State Interventions \\ from Update-Scale Effects in Continual Learning}
+
+\author{Anonymous authors\\Paper under double-blind review}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\small\textbf{Internal working draft v0 --- not submitted, not under review.}
+The running header is printed by the unmodified official ICLR~2027 style in anonymous mode.
+All numbers are generated from raw result files by \texttt{paper/tools/export\_numbers.py};
+claim-to-evidence links are in \texttt{paper/claim\_evidence.tsv}. Human review: pending.}}
+\end{center}
+
+\input{sections/abstract}
+\input{sections/introduction}
+\input{sections/related}
+\input{sections/setting}
+\input{sections/analysis}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusion}
+\input{sections/statements}
+
+\bibliography{references}
+\bibliographystyle{iclr2027_conference}
+
+\appendix
+\input{appendix}
+
+\end{document}
