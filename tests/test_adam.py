@@ -263,10 +263,13 @@ class TestResetT(unittest.TestCase):
 
 
 class TestResetTIsPerTensorRescaling(unittest.TestCase):
-    """reset_t keeps m and v, so every later update of a tensor is the keep_all update times
-    one scalar sqrt(1-b2^a_v)/(1-b1^a_m) (up to eps). Consequence (seen in p4_stage1): an
-    update-norm-matched keep_all control reproduces reset_t exactly; reset_t is a per-tensor
-    learning-rate schedule, not a change of update direction."""
+    """reset_t keeps m and v. For the SAME post-gradient (m, v), counters r (reset) and t (kept) give
+    u_r / u_t = kappa(r, t) * (sqrt(v) + eps*sqrt(b_t)) / (sqrt(v) + eps*sqrt(b_r)),
+    kappa(r, t) = sqrt(b_r) * a_t / (a_r * sqrt(b_t)).  Only with eps = 0 (and v > 0) is this one scalar
+    for all coordinates. Correction (2026-09-26): an earlier version of this docstring said the rescaling
+    holds "up to eps" and that the norm-matched control reproduces reset_t "exactly"; both hold only
+    approximately for eps > 0 (see TestCounterEquivalenceCounterexample). Here the gradients are O(1),
+    far above eps, so the relative tolerance 1e-6 is appropriate."""
 
     def test_same_direction_as_keep_all(self):
         pa, a = make_adam(n=6)
@@ -283,6 +286,45 @@ class TestResetTIsPerTensorRescaling(unittest.TestCase):
             scale = math.sqrt(1 - B2 ** k) / (1 - B1 ** k) * (1 - B1 ** (3000 + k)) / math.sqrt(1 - B2 ** (3000 + k))
             for x, y in zip(db, da):
                 self.assertTrue(close(x, scale * y, rel=1e-6))
+
+
+class TestCounterEquivalenceCounterexample(unittest.TestCase):
+    """Deterministic counterexample: two coordinates with constant gradients 1 and 1e-8 for 10,000
+    steps, then one step from the same (m, v) with the counter kept or reset (reset_t)."""
+
+    def ratios(self, eps):
+        p = {"w": Param([0.0, 0.0], (2,))}
+        opt = Adam(p, lr=LR, betas=(B1, B2), eps=eps)
+        g = [1.0, 1e-8]
+        for _ in range(10000):
+            opt.compute_update({"w": list(g)})
+        sd = opt.state_dict()
+        rs, _ = apply_intervention(sd, {"kind": "reset_t"})
+        u = {}
+        for name, s_ in (("keep", sd), ("reset", rs)):
+            o = Adam({"w": Param([0.0, 0.0], (2,))}, lr=LR, betas=(B1, B2), eps=eps)
+            o.load_state_dict(s_)
+            u[name] = o.compute_update({"w": list(g)})["w"]
+            v = o.state["w"]["v"]
+        a_ = lambda s: 1 - B1 ** s  # noqa: E731
+        b_ = lambda s: 1 - B2 ** s  # noqa: E731
+        t, r = 10001, 1
+        kap = math.sqrt(b_(r)) * a_(t) / (a_(r) * math.sqrt(b_(t)))
+        pred = [kap * (math.sqrt(vi) + eps * math.sqrt(b_(t))) / (math.sqrt(vi) + eps * math.sqrt(b_(r))) for vi in v]
+        return [u["reset"][i] / u["keep"][i] for i in range(2)], pred, kap
+
+    def test_eps_zero_gives_one_scalar_with_finite_age_factor(self):
+        got, pred, kap = self.ratios(0.0)
+        self.assertTrue(close(got[0], got[1], rel=1e-12))
+        self.assertTrue(close(got[0], kap, rel=1e-12))
+        # 0.3162... is only the t -> inf limit; the finite-age value differs at the 1e-5 level.
+        self.assertFalse(close(kap, math.sqrt(1 - B2) / (1 - B1), rel=1e-6))
+
+    def test_eps_positive_gives_coordinate_dependent_ratio(self):
+        got, pred, _ = self.ratios(EPS)
+        for x, y in zip(got, pred):
+            self.assertTrue(close(x, y, rel=1e-12))
+        self.assertGreater(got[1] / got[0], 1.5)
 
 
 class TestMixing(unittest.TestCase):

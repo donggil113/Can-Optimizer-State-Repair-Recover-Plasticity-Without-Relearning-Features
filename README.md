@@ -1,4 +1,4 @@
-# P4 — Can Optimizer-State Repair Recover Plasticity Without Relearning Features?
+# P4 — Separating Optimizer-State Interventions from Update-Scale Effects (repo name keeps the retired title "... Without Relearning Features")
 
 현재 상태는 [`STATUS.md`](STATUS.md)를 먼저 볼 것. 요약: **TECHNICAL_TEST_PASS**, Stage 1 과학 판정 **STATE_REPAIR_BRANCH_ON_HOLD** ([`docs/STAGE1_REPORT.md`](docs/STAGE1_REPORT.md)).
 

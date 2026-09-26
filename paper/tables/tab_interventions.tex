@@ -1,16 +1,16 @@
-\begin{tabular}{l ccc ccc}
+\begin{tabular}{l cc cc}
 \toprule
- & \multicolumn{3}{c}{random-teacher ($C{=}4$)} & \multicolumn{3}{c}{label-permutation ($C{=}10$)} \\
-\cmidrule(lr){2-4}\cmidrule(lr){5-7}
-Arm & $\Delta$ vs.\ keep & $\Delta$ vs.\ norm ctrl. & $\bar{\|u\|}_{1:10}$ & $\Delta$ vs.\ keep & $\Delta$ vs.\ norm ctrl. & $\bar{\|u\|}_{1:10}$ \\
+ & \multicolumn{2}{c}{random-teacher ($C{=}4$)} & \multicolumn{2}{c}{label-permutation ($C{=}10$)} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Arm & $\Delta$ vs.\ keep & $\Delta$ vs.\ norm ctrl. & $\Delta$ vs.\ keep & $\Delta$ vs.\ norm ctrl. \\
 \midrule
-\texttt{keep\_all} & --- & n/a & 0.0311 & --- & n/a & 0.0347 \\
-\texttt{reset\_m} & +0.021 [+0.015, +0.032] & +0.012 [+0.010, +0.015] & 0.0726 & +0.020 [+0.012, +0.027] & +0.008 [-0.005, +0.021] & 0.0808 \\
-\texttt{reset\_v} & -0.152 [-0.188, -0.087] & -0.020 [-0.060, +0.056] & 16.4 & -0.244 [-0.290, -0.176] & -0.048 [-0.081, +0.013] & 330 \\
-\texttt{reset\_both} & -0.008 [-0.049, +0.045] & -0.027 [-0.058, -0.011] & 0.049 & -0.043 [-0.063, -0.008] & -0.030 [-0.050, -0.016] & 0.0403 \\
-\texttt{reset\_t} & -0.207 [-0.255, -0.183] & +0.000 [+0.000, +0.000] & 0.00572 & -0.203 [-0.244, -0.130] & +0.000 [+0.000, +0.000] & 0.00632 \\
+\texttt{keep\_all} & --- & n/a & --- & n/a \\
+\texttt{reset\_m} & +0.021 [+0.015, +0.032] & +0.012 [+0.010, +0.015] & +0.020 [+0.012, +0.027] & +0.008 [-0.005, +0.021] \\
+\texttt{reset\_v} & -0.152 [-0.188, -0.087] & -0.020 [-0.060, +0.056] & -0.244 [-0.290, -0.176] & -0.048 [-0.081, +0.013] \\
+\texttt{reset\_both} & -0.008 [-0.049, +0.045] & -0.027 [-0.058, -0.011] & -0.043 [-0.063, -0.008] & -0.030 [-0.050, -0.016] \\
+\texttt{reset\_t} & -0.207 [-0.255, -0.183] & +0.000 [+0.000, +0.000] & -0.203 [-0.244, -0.130] & +0.000 [+0.000, +0.000] \\
 \midrule
-\texttt{reset\_v}, shared-keep$^\dagger$ & +0.063 [-0.163, +0.313] & n/a & 17.3 & -0.241 [-0.287, -0.171] & n/a & 331 \\
-\texttt{reset\_both}, shared-keep$^\dagger$ & +0.333 [+0.268, +0.410] & n/a & 0.249 & +0.251 [+0.235, +0.273] & n/a & 0.209 \\
+\texttt{reset\_v}, shared-keep$^\dagger$ & +0.063 [-0.163, +0.313] & n/a & -0.241 [-0.287, -0.171] & n/a \\
+\texttt{reset\_both}, shared-keep$^\dagger$ & +0.333 [+0.268, +0.410] & n/a & +0.251 [+0.235, +0.273] & n/a \\
 \bottomrule
 \end{tabular}

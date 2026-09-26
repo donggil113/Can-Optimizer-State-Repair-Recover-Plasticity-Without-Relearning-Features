@@ -164,18 +164,18 @@ def write_tables(R, rows):
     with open(os.path.join(OUT_T, "tab_phenomenon.tex"), "w") as f:
         f.write("\n".join(L) + "\n")
 
-    L = [r"\begin{tabular}{l ccc ccc}", r"\toprule",
-         r" & \multicolumn{3}{c}{random-teacher ($C{=}4$)} & \multicolumn{3}{c}{label-permutation ($C{=}10$)} \\",
-         r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
-         r"Arm & $\Delta$ vs.\ keep & $\Delta$ vs.\ norm ctrl. & $\bar{\|u\|}_{1:10}$ & "
-         r"$\Delta$ vs.\ keep & $\Delta$ vs.\ norm ctrl. & $\bar{\|u\|}_{1:10}$ \\", r"\midrule"]
+    L = [r"\begin{tabular}{l cc cc}", r"\toprule",
+         r" & \multicolumn{2}{c}{random-teacher ($C{=}4$)} & \multicolumn{2}{c}{label-permutation ($C{=}10$)} \\",
+         r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}",
+         r"Arm & $\Delta$ vs.\ keep & $\Delta$ vs.\ norm ctrl. & $\Delta$ vs.\ keep & $\Delta$ vs.\ norm ctrl. \\",
+         r"\midrule"]
     for arm in ARMS:
         cells = []
         for cond in CONDS:
             r = rows[(cond, arm)]
             dk = "---" if arm == "keep_all" else fmt_range(r["dk"])
             dc = fmt_range(r["dc"]) if ("dc" in r and arm != "keep_all") else "n/a"
-            cells += [dk, dc, f"{r['upd']:.3g}"]
+            cells += [dk, dc]
         L.append(f"{ARM_TEX[arm]} & " + " & ".join(cells) + r" \\")
         if arm == "reset_t":
             L.append(r"\midrule")
@@ -183,16 +183,16 @@ def write_tables(R, rows):
     with open(os.path.join(OUT_T, "tab_interventions.tex"), "w") as f:
         f.write("\n".join(L) + "\n")
 
-    L = [r"\begin{tabular}{l ccc ccc}", r"\toprule",
-         r" & \multicolumn{3}{c}{random-teacher ($C{=}4$)} & \multicolumn{3}{c}{label-permutation ($C{=}10$)} \\",
-         r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
-         r"Arm & rel.\ $\|\theta_{200}-\theta_0\|$ & CKA$_{200}$ & old-task drop & "
-         r"rel.\ $\|\theta_{200}-\theta_0\|$ & CKA$_{200}$ & old-task drop \\", r"\midrule"]
+    L = [r"\begin{tabular}{l cccc cccc}", r"\toprule",
+         r" & \multicolumn{4}{c}{random-teacher ($C{=}4$)} & \multicolumn{4}{c}{label-permutation ($C{=}10$)} \\",
+         r"\cmidrule(lr){2-5}\cmidrule(lr){6-9}",
+         r"Arm & $\bar{\|u\|}_{1:10}$ & rel.\ $\Delta\theta$ & CKA & old drop & "
+         r"$\bar{\|u\|}_{1:10}$ & rel.\ $\Delta\theta$ & CKA & old drop \\", r"\midrule"]
     for arm in ARMS:
         cells = []
         for cond in CONDS:
             r = rows[(cond, arm)]
-            cells += [f"{r['theta']:.3g}", f"{r['cka']:.3f}", f"{r['forget']:.3f}"]
+            cells += [f"{r['upd']:.3g}", f"{r['theta']:.3g}", f"{r['cka']:.3f}", f"{r['forget']:.3f}"]
         L.append(f"{ARM_TEX[arm]} & " + " & ".join(cells) + r" \\")
     L += [r"\bottomrule", r"\end{tabular}"]
     with open(os.path.join(OUT_T, "tab_descriptive.tex"), "w") as f:

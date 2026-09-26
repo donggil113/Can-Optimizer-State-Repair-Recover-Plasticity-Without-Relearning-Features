@@ -57,3 +57,18 @@
     첫 step 비율 0.3162 = √(1−β2)/(1−β1)로 구조적 항등식임을 확인한 뒤 회귀 테스트로 고정했다.
 - 사람이 검토할 것: `docs/STAGE1_REPORT.md`의 해석, 특히 오보정 artifact 이득을 "유효 step 크기 민감성"으로만
   기술한 부분. 원인은 검정하지 않았다.
+
+## 원고 단계 (2026-09-26, 같은 도구)
+
+- AI가 작성한 것: `paper/` 전체 (영어 원고, exporter, 빌드 스크립트, claim_evidence), `analysis/counter_equivalence.py`,
+  반례 테스트 2개, 문서 갱신.
+- 외부 자료:
+  - 공식 ICLR 2027 style ZIP을 수정 없이 사용했다 (hash 기록).
+  - Ubuntu 서명 패키지로 로컬 TeX를 구성했다 (시스템 설치 없음).
+  - Ellis et al. 수식은 이전 단계에서 원문을 확인했다.
+- AI가 스스로 잡은 오류:
+  - 원고 초안에 "모든 폭증 텐서의 비율 ≈1"이라고 썼으나, 원자료로 확인하니 17/20만 해당했다 (최대 1.54).
+    빌드 전에 정확한 매크로로 교체했다.
+  - 이전 보고의 "정확히 0 / 0.3162" 표현을 조건부 식으로 정정했다. 원문은 보존했다.
+- 원고의 AI Use Statement에는 공식 템플릿 문구("We have reviewed all AI-assisted work")를 쓰지 않았다.
+  대신 HUMAN_REVIEW_PENDING을 명시했다.

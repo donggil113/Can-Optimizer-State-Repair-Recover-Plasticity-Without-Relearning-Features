@@ -2,3 +2,10 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .venv/
+paper/.texlocal/
+paper/render_check/
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.out
+paper/main.log

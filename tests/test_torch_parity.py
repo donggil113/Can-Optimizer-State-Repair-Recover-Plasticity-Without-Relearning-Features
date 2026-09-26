@@ -190,6 +190,27 @@ class TestAdamTraceParity(unittest.TestCase):
         for name, (spec, op) in cases.items():
             self.assertLess(self._intervened(spec, op), 1e-9, name)
 
+    def test_counter_counterexample_in_torch(self):
+        """Stock torch: zeroing `step` rescales coordinates differently when eps > 0."""
+        ratios = {}
+        for eps in (0.0, EPS):
+            ps = [torch.nn.Parameter(torch.zeros(2, dtype=torch.float64)) for _ in range(2)]
+            opts = [torch.optim.Adam([p], lr=LR, betas=(B1, B2), eps=eps, foreach=False, fused=False) for p in ps]
+            g = torch.tensor([1.0, 1e-8], dtype=torch.float64)
+            for _ in range(10000):
+                for p, o in zip(ps, opts):
+                    p.grad = g.clone()
+                    o.step()
+            opts[1].state[ps[1]]["step"].zero_()
+            before = [p.detach().clone() for p in ps]
+            for p, o in zip(ps, opts):
+                p.grad = g.clone()
+                o.step()
+            u = [(p.detach() - b0) for p, b0 in zip(ps, before)]
+            ratios[eps] = (u[1] / u[0]).tolist()
+        self.assertLess(abs(ratios[0.0][0] / ratios[0.0][1] - 1), 1e-9)
+        self.assertGreater(ratios[EPS][1] / ratios[EPS][0], 1.5)
+
     def test_decoupled_single_moment_and_mix_have_no_stock_equivalent(self):
         def zero(*keys):
             def op(pair):

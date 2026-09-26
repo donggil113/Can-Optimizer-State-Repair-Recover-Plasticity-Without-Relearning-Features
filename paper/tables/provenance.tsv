@@ -249,3 +249,32 @@ ParityW	1.7e-14	1.67e-14	runs/p4_stage1/torch_parity_measured.txt	vanilla Adam 4
 ParityM	1.4e-13	1.41e-13	runs/p4_stage1/torch_parity_measured.txt	vanilla Adam 400 steps max rel diff [m]
 ParityV	3.9e-16	3.88e-16	runs/p4_stage1/torch_parity_measured.txt	vanilla Adam 400 steps max rel diff [v]
 ParityUpd	3.6e-11	3.56e-11	runs/p4_stage1/torch_parity_measured.txt	vanilla Adam 400 steps max rel diff [upd]
+CeKappa	0.316235	0.3162349016489603	runs/p4_analysis_counter/result.json	counterexample_eps1e-8.kappa
+CeKappaInf	0.316228	0.3162277660168381	runs/p4_analysis_counter/result.json	schedules.kappa_inf_limit
+CeEpsZeroRatioA	0.316235	0.31623490164896034	runs/p4_analysis_counter/result.json	counterexample_eps0.ratio[0]
+CeEpsZeroRatioB	0.316235	0.3162349016489603	runs/p4_analysis_counter/result.json	counterexample_eps0.ratio[1]
+CeRatioA	0.316235	0.3162349047113049	runs/p4_analysis_counter/result.json	counterexample_eps1e-8.ratio[0]
+CeRatioB	0.613082	0.6130820103726216	runs/p4_analysis_counter/result.json	counterexample_eps1e-8.ratio[1]
+CeMaxErr	2.2e-16	2.220446049250313e-16	runs/p4_analysis_counter/result.json	max(counterexample_*.max_rel_err_vs_eq)
+TraceResetTDev	8.1e-07	8.094943273473376e-07	runs/p4_analysis_counter/result.json	one_step.reset_t/keep_all.max_rel_dev
+TraceBothSkPred	3.162	3.162206305457264	runs/p4_analysis_counter/result.json	one_step.reset_both_sk/reset_both.eps0_prediction
+TraceBothSkDev	4.6e-04	0.00046430856710055757	runs/p4_analysis_counter/result.json	one_step.reset_both_sk/reset_both.max_rel_dev
+TraceVSkPred	31.62	31.622063054572642	runs/p4_analysis_counter/result.json	one_step.reset_v_sk/reset_v.eps0_prediction
+TraceVSkMin	1	1.000000000492138	runs/p4_analysis_counter/result.json	one_step.reset_v_sk/reset_v.min_ratio
+TraceVSkMax	31.6	31.621903084428595	runs/p4_analysis_counter/result.json	one_step.reset_v_sk/reset_v.max_ratio
+TraceVSkEpsLimited	17	17	runs/p4_analysis_counter/result.json	count(one_step.reset_v_sk/reset_v.per_tensor[*].ratio within 1% of 1)
+TraceVSkTensors	30	30	runs/p4_analysis_counter/result.json	len(one_step.reset_v_sk/reset_v.per_tensor)
+TraceVSkBigCount	20	20	runs/p4_analysis_counter/result.json	count(per_tensor with norm_decoupled > 1)
+TraceVSkBigNearOne	17	17	runs/p4_analysis_counter/result.json	count(per_tensor with norm_decoupled > 1 and ratio within 1% of 1)
+TraceVSkBigMaxRatio	1.54	1.5391852823251693	runs/p4_analysis_counter/result.json	max(per_tensor[norm_decoupled > 1].ratio)
+TraceVSkBiasMin	31.62	31.61988509552971	runs/p4_analysis_counter/result.json	min(one_step.reset_v_sk/reset_v.per_tensor[*/fc2.bias].ratio)
+TrajLossDiff	6.5e-08	6.507447292136703e-08	runs/p4_analysis_counter/result.json	trajectory_reset_t_vs_control.train_loss_max_abs
+TrajProbeLossDiff	5.4e-08	5.41467723991218e-08	runs/p4_analysis_counter/result.json	trajectory_reset_t_vs_control.probe_loss_max_abs
+TrajProbeAccDiff	0.0e+00	0.0	runs/p4_analysis_counter/result.json	trajectory_reset_t_vs_control.probe_acc_max_abs
+TrajThetaDiff	9.8e-09	9.756317032039163e-09	runs/p4_analysis_counter/result.json	trajectory_reset_t_vs_control.theta_rel_change_max_abs
+SchedKappaMin	0.152	0.15224468821419176	runs/p4_analysis_counter/result.json	schedules.kappa_min
+SchedKappaArgmin	12	12	runs/p4_analysis_counter/result.json	schedules.kappa_argmin_k
+SchedKappaEnd	0.426	0.42586133610870974	runs/p4_analysis_counter/result.json	schedules.kappa_k200
+SchedRhoMax	6.57	6.568373660387471	runs/p4_analysis_counter/result.json	schedules.rho_max
+SchedRhoArgmax	12	12	runs/p4_analysis_counter/result.json	schedules.rho_argmax_k
+SchedRhoEnd	2.35	2.3481821785876558	runs/p4_analysis_counter/result.json	schedules.rho_k200

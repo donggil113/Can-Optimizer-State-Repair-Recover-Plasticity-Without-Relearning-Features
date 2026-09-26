@@ -1,3 +1,22 @@
 utc	bucket	status	exit	cpu_s	wall_s	peak_rss_kb	bucket_total_cpu_s	cmd
 2026-09-26T22:38:43+00:00	analysis	OK	0	0.335	0.6	11904	0.34	python3 paper/tools/export_numbers.py
 2026-09-26T22:40:09+00:00	analysis	OK	0	0.33	0.331	11904	0.66	python3 paper/tools/export_numbers.py
+2026-09-26T22:45:05+00:00	analysis	OK	0	0.487	0.788	41872	1.15	python3 analysis/counter_equivalence.py
+2026-09-26T22:45:33+00:00	analysis	OK	0	0.417	0.42	42160	1.57	python3 analysis/counter_equivalence.py
+2026-09-26T22:46:02+00:00	analysis	OK	0	0.441	0.455	42168	2.01	python3 analysis/counter_equivalence.py
+2026-09-26T22:46:03+00:00	analysis	OK	0	0.613	0.621	19740	2.62	python3 -m unittest tests.test_adam
+2026-09-26T22:46:04+00:00	analysis	OK	0	8.42	28.676	302808	11.04	.venv/bin/python -W ignore::UserWarning -m unittest tests.test_torch_parity
+2026-09-26T22:47:03+00:00	analysis	OK	0	0.329	0.33	12032	11.37	python3 paper/tools/export_numbers.py
+2026-09-26T22:47:26+00:00	analysis	OK	0	0.408	0.409	42164	11.78	python3 analysis/counter_equivalence.py
+2026-09-26T22:47:26+00:00	analysis	OK	0	0.363	0.366	12028	12.14	python3 paper/tools/export_numbers.py
+2026-09-26T22:49:17+00:00	build	FAIL	1	0.182	0.18	17828	0.18	python3 paper/tools/build_pdf.py
+2026-09-26T22:50:00+00:00	build	FAIL	1	5.367	5.393	42692	5.55	python3 paper/tools/build_pdf.py
+2026-09-26T22:50:13+00:00	build	FAIL	1	1.207	1.208	40264	6.76	python3 paper/tools/build_pdf.py
+2026-09-26T22:51:31+00:00	build	OK	0	7.384	7.383	42640	14.14	python3 paper/tools/build_pdf.py
+2026-09-26T22:52:23+00:00	build	OK	0	1.211	1.214	19604	15.35	env LD_LIBRARY_PATH=/home/user/Can-Optimizer-State-Repair-Recover-Plasticity-Without-Relearning-Features/paper/.texlocal/render/usr/lib/x86_64-linux-gnu paper/.texlocal/render/usr/bin/pdftoppm -r 70 -png paper/main.pdf paper/render_check/p
+2026-09-26T22:53:03+00:00	build	OK	0	2.614	2.634	40884	17.96	python3 paper/tools/build_pdf.py
+2026-09-26T22:53:31+00:00	analysis	OK	0	0.322	0.324	12016	12.47	python3 paper/tools/export_numbers.py
+2026-09-26T22:53:31+00:00	build	OK	0	3.19	3.211	40924	21.16	python3 paper/tools/build_pdf.py
+2026-09-26T22:53:41+00:00	build	OK	0	1.241	1.249	19680	22.4	env LD_LIBRARY_PATH=/home/user/Can-Optimizer-State-Repair-Recover-Plasticity-Without-Relearning-Features/paper/.texlocal/render/usr/lib/x86_64-linux-gnu paper/.texlocal/render/usr/bin/pdftoppm -r 70 -png paper/main.pdf paper/render_check/p
+2026-09-26T22:53:51+00:00	analysis	OK	0	4.741	4.799	26324	17.21	python3 -W error::ResourceWarning -W ignore::UserWarning -m unittest discover -s tests -t .
+2026-09-26T22:53:56+00:00	analysis	OK	0	14.252	14.337	308392	31.46	.venv/bin/python -W error::ResourceWarning -W ignore::UserWarning -m unittest discover -s tests -t .

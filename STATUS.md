@@ -1,15 +1,24 @@
-# STATUS — P4 (최종 갱신 2026-09-26, Stage 1 이후)
+# STATUS — P4 (최종 갱신 2026-09-26, 원고 v0 이후)
 
 ## 판정
 
 | 구분 | 상태 |
 |---|---|
-| 소프트웨어 | **TECHNICAL_TEST_PASS**: unittest 89개. `.venv`에서는 89/89 통과·skip 0. 시스템 Python에서는 torch parity 5개가 SKIP(PASS 아님) |
-| torch parity | **PASS**: MLP forward/grad/BN, vanilla Adam weight/m/v/update/step trace. 최대 상대 차이 ≤ 3.6e-11 |
-| 과학 (Stage 1) | **STATE_REPAIR_BRANCH_ON_HOLD**: 두 합성 조건에서 학습 능력 저하는 관측(ESTABLISHED)됐다. 올바르게 보정한 state 개입은 keep_all 대비 양의 효과가 없거나, update 크기(norm 일치 통제)로 설명됐다. 범위: 합성 2조건, oracle timing, seed 3 (이미 열람한 개발 seed) |
+| 소프트웨어 | **TECHNICAL_TEST_PASS**: unittest 92개. `.venv`에서 92/92 통과·skip 0. 시스템 Python에서는 torch 6개가 SKIP(PASS 아님) |
+| torch parity | **PASS** (최대 상대 차이 ≤ 3.6e-11) |
+| 과학 | **STATE_REPAIR_BRANCH_ON_HOLD** (유지): 학습 능력 저하 관측, 올바르게 보정한 state 개입의 update 크기 초과 효용 미지지 |
 | 파일럿 준비 | **NOT_READY_FOR_PILOT** (유지) |
+| 원고 | **Working Draft v0, BUILT** — `paper/main.pdf` (공식 ICLR 2027 style, 익명, 미제출, 본문 7쪽). HUMAN_REVIEW_PENDING. [`paper/PAPER_STATUS.md`](paper/PAPER_STATUS.md) |
 
-Stage 1 상세는 [`docs/STAGE1_REPORT.md`](docs/STAGE1_REPORT.md), 원자료는 `runs/p4_stage1_0404c14/`.
+## 원고 단계 (2026-09-26)
+
+- 원고 가제: *Separating Optimizer-State Interventions from Update-Scale Effects in Continual Learning*
+  ("without relearning features" 삭제).
+- 수식 정정: counter 등가는 ε=0, v>0일 때만 성립하는 scalar 배율 κ(r,t)이다. 0.3162는 t→∞ 근사다.
+  - ε>0 반례: 0.316 vs 0.613 (`analysis/counter_equivalence.py`, 테스트 추가).
+  - reset_t와 통제의 "0"은 정확도 동률이고, 연속량은 ≤ 6.5e-8 차이 (원로그 재분석).
+- reset_v의 텐서 수준 비율(17/30이 ≈1)은 ε-지배 좌표와 부합한다. 좌표 수준 확인은 CHECKPOINT_TRACE_UNAVAILABLE.
+- 새 학습·trunk·sweep은 없다. 분석 CPU 31.5 s / 900 s, 빌드 22.4 s / 600 s.
 
 ## Stage 1 요약 (2026-09-26)
 

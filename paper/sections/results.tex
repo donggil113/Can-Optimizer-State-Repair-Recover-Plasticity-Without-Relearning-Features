@@ -18,7 +18,7 @@ Differences are late minus early, per seed paired; brackets give the seed range.
 \begin{figure}[t]
 \centering
 \begin{tikzpicture}
-\begin{axis}[width=0.48\linewidth, height=4.2cm, title={random-teacher ($C{=}4$)}, xlabel={probe step},
+\begin{axis}[width=0.43\linewidth, height=4.2cm, title={random-teacher ($C{=}4$)}, xlabel={probe step},
   ylabel={held-out probe acc.}, ymin=0, ymax=1, legend pos=south east, legend style={font=\scriptsize},
   tick label style={font=\scriptsize}, label style={font=\small}, title style={font=\small}]
 \addplot[thick, black] table[x=k, y=mean] {figures/curve_RT_fresh.dat}; \addlegendentry{fresh}
@@ -27,7 +27,7 @@ Differences are late minus early, per seed paired; brackets give the seed range.
 \end{axis}
 \end{tikzpicture}\hfill
 \begin{tikzpicture}
-\begin{axis}[width=0.48\linewidth, height=4.2cm, title={label-permutation ($C{=}10$)}, xlabel={probe step},
+\begin{axis}[width=0.43\linewidth, height=4.2cm, title={label-permutation ($C{=}10$)}, xlabel={probe step},
   ymin=0, ymax=1, tick label style={font=\scriptsize}, label style={font=\small}, title style={font=\small}]
 \addplot[thick, black] table[x=k, y=mean] {figures/curve_LP_fresh.dat};
 \addplot[thick, blue, dashed] table[x=k, y=mean] {figures/curve_LP_early.dat};
@@ -58,8 +58,9 @@ appears with the separately tuned $\beta_1{=}\beta_2{=}0.9$ Adam (\RTAdamEqBetaL
 
 \begin{table}[t]
 \caption{Interventions on the late checkpoint. $\Delta$: probe-AUC difference to \keep{} and to the
-intervention's update-norm control, mean [seed range]. $\bar{\|u\|}_{1:10}$: mean update norm over the
-first 10 probe steps. $^\dagger$Mis-corrected artifact controls (counter not reset), not candidate methods.}
+intervention's update-norm control, mean [seed range]. Update norms and descriptive statistics are in
+Appendix~\ref{app:descriptive}. $^\dagger$Mis-corrected artifact controls (counter not reset), not
+candidate methods.}
 \label{tab:interventions}
 \centering\scriptsize\setlength{\tabcolsep}{3pt}
 \input{tables/tab_interventions.tex}
@@ -87,15 +88,19 @@ that the two arms are equivalent.
 
 \textbf{Counter-only reset slows learning, as its schedule predicts.} \texttt{reset\_t} lowers AUC by
 \RTResetTVsKeep{} and \LPResetTVsKeep{}, and its early update norm is \RTResetTUpdTen{} versus \RTKeepAllUpdTen{} (random-teacher).
-Consistent with Section~\ref{sec:analysis}(i), its difference to the update-norm control is
-\RTResetTVsCtrl{} in the exported table on every seed. Appendix~\ref{app:trace} checks the precision of
-this difference against the raw logs.
+Consistent with Section~\ref{sec:analysis}(i), its accuracy curve ties its update-norm control
+exactly on every seed. The continuous quantities differ only at the level of \TrajLossDiff{} in loss, so
+the trajectories are close but not bitwise identical (Appendix~\ref{app:trace}). For this arm the
+control is effectively the same algorithm and does not constitute an independent test.
 
 \textbf{Exactly corrected second-moment reset is unstable.} \texttt{reset\_v} raises the mean
 first-10-step update norm from \RTKeepAllUpdTen{} to \RTResetVUpdTen{} (random-teacher) and from
 \LPKeepAllUpdTen{} to \LPResetVUpdTen{} (label-permutation), and it lowers AUC by \RTResetVVsKeep{} and
-\LPResetVVsKeep{}. This is the behaviour Eq.~\eqref{eq:resetv} allows. We could not verify at the
-coordinate level that near-zero gradients cause it, because per-coordinate traces were not stored.
+\LPResetVVsKeep{}. This is the behaviour \eqref{eq:resetv} allows. At the tensor level, the exploding tensors have shared-keep/decoupled update ratios of at most
+\TraceVSkBigMaxRatio{} (\TraceVSkBigNearOne{} of \TraceVSkBigCount{} within 1\% of 1), instead of the
+$\eps=0$ prediction \TraceVSkPred{} (Appendix~\ref{app:trace}). By \eqref{eq:ratio}, this is the signature of $\eps$-dominated
+coordinates, which is consistent with near-zero current gradients meeting a non-zero kept momentum. We
+did not store per-coordinate traces, so we could not verify this at the coordinate level.
 
 \textbf{The largest gains come from a mis-corrected artifact.} \texttt{reset\_both} with the counter
 left unchanged improves AUC by \RTResetBothSharedKeepVsKeep{} and \LPResetBothSharedKeepVsKeep{}. This

@@ -1,0 +1,207 @@
+{
+ "counterexample_eps0": {
+  "eps": 0.0,
+  "g": [
+   1.0,
+   1e-08
+  ],
+  "ratio": [
+   0.31623490164896034,
+   0.3162349016489603
+  ],
+  "eq_ratio": [
+   0.3162349016489603,
+   0.3162349016489603
+  ],
+  "max_rel_err_vs_eq": 2.220446049250313e-16,
+  "kappa": 0.3162349016489603,
+  "coordinate_ratio_spread": 0.9999999999999998
+ },
+ "counterexample_eps1e-8": {
+  "eps": 1e-08,
+  "g": [
+   1.0,
+   1e-08
+  ],
+  "ratio": [
+   0.3162349047113049,
+   0.6130820103726216
+  ],
+  "eq_ratio": [
+   0.31623490471130483,
+   0.6130820103726214
+  ],
+  "max_rel_err_vs_eq": 2.220446049250313e-16,
+  "kappa": 0.3162349016489603,
+  "coordinate_ratio_spread": 1.9386917801888832
+ },
+ "one_step": {
+  "reset_t/keep_all": {
+   "eps0_prediction": 0.3162349016489603,
+   "max_rel_dev": 8.094943273473376e-07,
+   "min_ratio": 0.3162349293669906,
+   "max_ratio": 0.3162351576393193,
+   "n": 30
+  },
+  "reset_both_sk/reset_both": {
+   "eps0_prediction": 3.162206305457264,
+   "max_rel_dev": 0.00046430856710055757,
+   "min_ratio": 3.160738065978701,
+   "max_ratio": 3.1621984334126565,
+   "n": 30
+  },
+  "reset_v_sk/reset_v": {
+   "eps0_prediction": 31.622063054572642,
+   "max_rel_dev": 0.9683765098195408,
+   "min_ratio": 1.000000000492138,
+   "max_ratio": 31.621903084428595,
+   "n": 30,
+   "per_tensor": {
+    "random_teacher_c4/3000/fc2.weight": {
+     "ratio": 1.0004061309351346,
+     "norm_decoupled": 36.35790618018982
+    },
+    "random_teacher_c4/3000/fc2.bias": {
+     "ratio": 31.62187970699224,
+     "norm_decoupled": 0.0010803882366834947
+    },
+    "random_teacher_c4/3000/bn.weight": {
+     "ratio": 1.0003858271250299,
+     "norm_decoupled": 34.59389202070359
+    },
+    "random_teacher_c4/3000/bn.bias": {
+     "ratio": 1.0001460786911809,
+     "norm_decoupled": 15.589295454314497
+    },
+    "random_teacher_c4/3000/fc1.weight": {
+     "ratio": 1.5391852823251693,
+     "norm_decoupled": 5.852803970819727
+    },
+    "random_teacher_c4/3001/fc2.weight": {
+     "ratio": 31.61066113225439,
+     "norm_decoupled": 0.06462471237467095
+    },
+    "random_teacher_c4/3001/fc2.bias": {
+     "ratio": 31.620944902933463,
+     "norm_decoupled": 0.0014473943575332578
+    },
+    "random_teacher_c4/3001/bn.weight": {
+     "ratio": 31.611499762692297,
+     "norm_decoupled": 0.029139331042213674
+    },
+    "random_teacher_c4/3001/bn.bias": {
+     "ratio": 31.570275733409794,
+     "norm_decoupled": 0.17481172139549597
+    },
+    "random_teacher_c4/3001/fc1.weight": {
+     "ratio": 30.714768862802313,
+     "norm_decoupled": 0.3682930732398355
+    },
+    "random_teacher_c4/3002/fc2.weight": {
+     "ratio": 1.0167581278666218,
+     "norm_decoupled": 102.84010816149177
+    },
+    "random_teacher_c4/3002/fc2.bias": {
+     "ratio": 31.621903084428595,
+     "norm_decoupled": 0.0032390684706600846
+    },
+    "random_teacher_c4/3002/bn.weight": {
+     "ratio": 1.0000019334928014,
+     "norm_decoupled": 374.0393075627235
+    },
+    "random_teacher_c4/3002/bn.bias": {
+     "ratio": 1.0000072794098684,
+     "norm_decoupled": 165.5753041141713
+    },
+    "random_teacher_c4/3002/fc1.weight": {
+     "ratio": 1.049357564833306,
+     "norm_decoupled": 54.304772511634525
+    },
+    "label_permutation_c10/3000/fc2.weight": {
+     "ratio": 1.0000078515026691,
+     "norm_decoupled": 457.57348333399085
+    },
+    "label_permutation_c10/3000/fc2.bias": {
+     "ratio": 31.621425814688678,
+     "norm_decoupled": 0.006735170285558494
+    },
+    "label_permutation_c10/3000/bn.weight": {
+     "ratio": 1.0000000128388415,
+     "norm_decoupled": 1955.5808949592029
+    },
+    "label_permutation_c10/3000/bn.bias": {
+     "ratio": 1.000000029206077,
+     "norm_decoupled": 769.3388632871016
+    },
+    "label_permutation_c10/3000/fc1.weight": {
+     "ratio": 1.000016189142487,
+     "norm_decoupled": 305.60358345135023
+    },
+    "label_permutation_c10/3001/fc2.weight": {
+     "ratio": 1.0000045177882801,
+     "norm_decoupled": 737.9874982077785
+    },
+    "label_permutation_c10/3001/fc2.bias": {
+     "ratio": 31.61988509552971,
+     "norm_decoupled": 0.020532618012567415
+    },
+    "label_permutation_c10/3001/bn.weight": {
+     "ratio": 1.000000009066126,
+     "norm_decoupled": 3506.836483981254
+    },
+    "label_permutation_c10/3001/bn.bias": {
+     "ratio": 1.0000000197538004,
+     "norm_decoupled": 1529.9928894815407
+    },
+    "label_permutation_c10/3001/fc1.weight": {
+     "ratio": 1.0010926999746288,
+     "norm_decoupled": 716.9811288636943
+    },
+    "label_permutation_c10/3002/fc2.weight": {
+     "ratio": 1.000049419591776,
+     "norm_decoupled": 320.6992407618329
+    },
+    "label_permutation_c10/3002/fc2.bias": {
+     "ratio": 31.621509247056537,
+     "norm_decoupled": 0.007600928301436707
+    },
+    "label_permutation_c10/3002/bn.weight": {
+     "ratio": 1.000000000492138,
+     "norm_decoupled": 2980.80812020703
+    },
+    "label_permutation_c10/3002/bn.bias": {
+     "ratio": 1.0000000053007163,
+     "norm_decoupled": 1229.2325023074013
+    },
+    "label_permutation_c10/3002/fc1.weight": {
+     "ratio": 1.0000421023983677,
+     "norm_decoupled": 378.47398009937416
+    }
+   }
+  }
+ },
+ "trajectory_reset_t_vs_control": {
+  "train_loss_max_abs": 6.507447292136703e-08,
+  "update_norm_max_rel": 8.881784197001252e-16,
+  "probe_loss_max_abs": 5.41467723991218e-08,
+  "probe_acc_max_abs": 0.0,
+  "theta_rel_change_max_abs": 9.756317032039163e-09,
+  "cka_max_abs": 1.6769285515749743e-08,
+  "bitwise_equal_train_loss_all": false,
+  "n_pairs": 6
+ },
+ "schedules": {
+  "kappa_k1": 0.3162349016489603,
+  "kappa_min": 0.15224468821419176,
+  "kappa_argmin_k": 12,
+  "kappa_k200": 0.42586133610870974,
+  "rho_k1": 3.162206305457264,
+  "rho_max": 6.568373660387471,
+  "rho_argmax_k": 12,
+  "rho_k200": 2.3481821785876558,
+  "kappa_inf_limit": 0.3162277660168381,
+  "kappa_1_t1": 0.3162349016489603
+ },
+ "norm_control_uses_own_direction": true,
+ "per_coordinate_attribution": "CHECKPOINT_TRACE_UNAVAILABLE (late checkpoints not stored; logs hold per-tensor norms only)"
+}

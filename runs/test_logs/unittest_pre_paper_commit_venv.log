@@ -1,0 +1,6 @@
+# worktree based on f586ad51a118574bca97e1a722025f3efe1a25b2 + uncommitted changes (tests for counter counterexample added); interpreter .venv/bin/python
+............................................................................................
+----------------------------------------------------------------------
+Ran 92 tests in 12.518s
+
+OK

@@ -1,15 +1,15 @@
-\begin{tabular}{l ccc ccc}
+\begin{tabular}{l cccc cccc}
 \toprule
- & \multicolumn{3}{c}{random-teacher ($C{=}4$)} & \multicolumn{3}{c}{label-permutation ($C{=}10$)} \\
-\cmidrule(lr){2-4}\cmidrule(lr){5-7}
-Arm & rel.\ $\|\theta_{200}-\theta_0\|$ & CKA$_{200}$ & old-task drop & rel.\ $\|\theta_{200}-\theta_0\|$ & CKA$_{200}$ & old-task drop \\
+ & \multicolumn{4}{c}{random-teacher ($C{=}4$)} & \multicolumn{4}{c}{label-permutation ($C{=}10$)} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-9}
+Arm & $\bar{\|u\|}_{1:10}$ & rel.\ $\Delta\theta$ & CKA & old drop & $\bar{\|u\|}_{1:10}$ & rel.\ $\Delta\theta$ & CKA & old drop \\
 \midrule
-\texttt{keep\_all} & 0.38 & 0.703 & 0.441 & 0.342 & 0.773 & 0.398 \\
-\texttt{reset\_m} & 0.391 & 0.689 & 0.449 & 0.349 & 0.786 & 0.408 \\
-\texttt{reset\_v} & 15.1 & 0.351 & 0.418 & 274 & 0.159 & 0.365 \\
-\texttt{reset\_both} & 0.448 & 0.756 & 0.444 & 0.386 & 0.845 & 0.400 \\
-\texttt{reset\_t} & 0.169 & 0.925 & 0.143 & 0.16 & 0.903 & 0.109 \\
-\texttt{reset\_v}, shared-keep$^\dagger$ & 15.7 & 0.294 & 0.487 & 273 & 0.160 & 0.368 \\
-\texttt{reset\_both}, shared-keep$^\dagger$ & 0.859 & 0.471 & 0.538 & 0.711 & 0.723 & 0.426 \\
+\texttt{keep\_all} & 0.0311 & 0.38 & 0.703 & 0.441 & 0.0347 & 0.342 & 0.773 & 0.398 \\
+\texttt{reset\_m} & 0.0726 & 0.391 & 0.689 & 0.449 & 0.0808 & 0.349 & 0.786 & 0.408 \\
+\texttt{reset\_v} & 16.4 & 15.1 & 0.351 & 0.418 & 330 & 274 & 0.159 & 0.365 \\
+\texttt{reset\_both} & 0.049 & 0.448 & 0.756 & 0.444 & 0.0403 & 0.386 & 0.845 & 0.400 \\
+\texttt{reset\_t} & 0.00572 & 0.169 & 0.925 & 0.143 & 0.00632 & 0.16 & 0.903 & 0.109 \\
+\texttt{reset\_v}, shared-keep$^\dagger$ & 17.3 & 15.7 & 0.294 & 0.487 & 331 & 273 & 0.160 & 0.368 \\
+\texttt{reset\_both}, shared-keep$^\dagger$ & 0.249 & 0.859 & 0.471 & 0.538 & 0.209 & 0.711 & 0.723 & 0.426 \\
 \bottomrule
 \end{tabular}
