@@ -1,0 +1,83 @@
+{
+  "name": "p4_smoke",
+  "purpose": "TECHNICAL smoke test of the paired branching runner on CPU. Not the pilot. Numbers are not evidence for or against the research question.",
+  "model": {"in_dim": 16, "hidden": 32, "out_dim": 4, "dropout": 0.1, "norm": "batchnorm", "bn_momentum": 0.1, "bn_eps": 1e-05},
+  "stream": {"family": "random_teacher", "in_dim": 16, "n_classes": 4, "n_tasks": 4, "steps_per_task": 200, "batch_size": 16, "eval_size": 256},
+  "branch": {"task_index": 3, "timing_note": "The branch point is the first step of task 3, chosen with knowledge of the task boundary. Every branch arm is therefore an ORACLE-timed comparator."},
+  "post_branch_steps": 200,
+  "eval_every": 10,
+  "probe_size": 64,
+  "base_optimizer": "tuned:adam_lr",
+  "tuning": {
+    "split": "dev",
+    "seeds": [1000, 1001],
+    "selection_metric": "new_task_auc_acc",
+    "selection_rule": "highest mean over dev seeds; ties -> earliest grid entry",
+    "families": {
+      "adam_lr": {
+        "base": {"kind": "adam", "beta1": 0.9, "beta2": 0.999, "eps": 1e-08},
+        "grid": [{"lr": 0.001}, {"lr": 0.003}, {"lr": 0.01}]
+      },
+      "adam_lr_beta": {
+        "base": {"kind": "adam", "eps": 1e-08},
+        "grid": [
+          {"lr": 0.001, "beta1": 0.9, "beta2": 0.999}, {"lr": 0.003, "beta1": 0.9, "beta2": 0.999}, {"lr": 0.01, "beta1": 0.9, "beta2": 0.999},
+          {"lr": 0.001, "beta1": 0.9, "beta2": 0.99}, {"lr": 0.003, "beta1": 0.9, "beta2": 0.99}, {"lr": 0.01, "beta1": 0.9, "beta2": 0.99},
+          {"lr": 0.001, "beta1": 0.9, "beta2": 0.9}, {"lr": 0.003, "beta1": 0.9, "beta2": 0.9}, {"lr": 0.01, "beta1": 0.9, "beta2": 0.9}
+        ]
+      },
+      "sgd": {
+        "base": {"kind": "sgd", "momentum": 0.9},
+        "grid": [{"lr": 0.01}, {"lr": 0.03}, {"lr": 0.1}, {"lr": 0.3}]
+      }
+    }
+  },
+  "test_seeds": [3000, 3001, 3002],
+  "resource_caps": {"max_wall_seconds": 1800, "device": "cpu", "threads": 1},
+  "arms": [
+    {"name": "keep_all", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "keep_all"},
+     "access": {"labels": "current batch", "boundary_oracle": true}},
+    {"name": "reset_m", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "reset_m", "counter": "decoupled"},
+     "access": {"labels": "current batch", "boundary_oracle": true}},
+    {"name": "reset_v", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "reset_v", "counter": "decoupled"},
+     "access": {"labels": "current batch", "boundary_oracle": true}},
+    {"name": "reset_both", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "reset_both", "counter": "decoupled"},
+     "access": {"labels": "current batch", "boundary_oracle": true}},
+    {"name": "mix_0.5", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "mix", "rho_m": 0.5, "rho_v": 0.5, "counter": "decoupled"},
+     "access": {"labels": "current batch", "boundary_oracle": true}, "note": "rho fixed a priori, not tuned"},
+    {"name": "reset_m__shared_keep", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "reset_m", "counter": "shared_keep"},
+     "access": {"labels": "current batch", "boundary_oracle": true}, "note": "bias-correction artifact probe"},
+    {"name": "reset_v__shared_keep", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "reset_v", "counter": "shared_keep"},
+     "access": {"labels": "current batch", "boundary_oracle": true}, "note": "bias-correction artifact probe"},
+    {"name": "reset_both__shared_keep", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "reset_both", "counter": "shared_keep"},
+     "access": {"labels": "current batch", "boundary_oracle": true}, "note": "bias-correction artifact probe"},
+    {"name": "reset_m__shared_reset", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "reset_m", "counter": "shared_reset"},
+     "access": {"labels": "current batch", "boundary_oracle": true}, "note": "bias-correction artifact probe"},
+    {"name": "reset_v__shared_reset", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "reset_v", "counter": "shared_reset"},
+     "access": {"labels": "current batch", "boundary_oracle": true}, "note": "bias-correction artifact probe"},
+    {"name": "lr_bump_x3_20", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "keep_all"},
+     "lr_schedule": {"kind": "bump", "factor": 3.0, "steps": 20},
+     "access": {"labels": "current batch", "boundary_oracle": true}, "note": "LR control; factor and length fixed a priori, not tuned"},
+    {"name": "beta_switch_b1b2_0.9", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "beta_switch", "beta1": 0.9, "beta2": 0.9},
+     "access": {"labels": "current batch", "boundary_oracle": true}, "note": "memory-length control (beta1 = beta2), not state-only"},
+    {"name": "keepdir_resetbothmag", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "keep_all"},
+     "norm_match": {"reference_arm": "reset_both"},
+     "access": {"labels": "current batch", "boundary_oracle": true, "privileged": "per-step, per-tensor update norms of reset_both"},
+     "note": "update-norm control: keep_all direction with reset_both magnitude (diagnostic, not deployable)"},
+    {"name": "resetbothdir_keepmag", "type": "branch", "timing": "oracle_boundary", "intervention": {"kind": "reset_both", "counter": "decoupled"},
+     "norm_match": {"reference_arm": "keep_all"},
+     "access": {"labels": "current batch", "boundary_oracle": true, "privileged": "per-step, per-tensor update norms of keep_all"},
+     "note": "update-norm control: reset_both direction with keep_all magnitude (diagnostic, not deployable)"},
+    {"name": "adam_base_replay", "type": "scratch", "timing": "none", "optimizer": "tuned:adam_lr", "replays_base": true,
+     "access": {"labels": "current batch", "boundary_oracle": false, "dev_tuning": "adam_lr grid"},
+     "note": "integrity check: must be bitwise identical to keep_all"},
+    {"name": "adam_tuned_lr_beta", "type": "scratch", "timing": "none", "optimizer": "tuned:adam_lr_beta",
+     "access": {"labels": "current batch", "boundary_oracle": false, "dev_tuning": "adam_lr_beta grid"}},
+    {"name": "sgd_tuned", "type": "scratch", "timing": "none", "optimizer": "tuned:sgd",
+     "access": {"labels": "current batch", "boundary_oracle": false, "dev_tuning": "sgd grid"}},
+    {"name": "periodic_reset_both_P128", "type": "scratch", "timing": "periodic_no_oracle", "optimizer": "tuned:adam_lr",
+     "schedule": {"kind": "periodic", "period": 128, "intervention": {"kind": "reset_both", "counter": "decoupled"}},
+     "access": {"labels": "current batch", "boundary_oracle": false, "dev_tuning": "adam_lr grid"},
+     "note": "non-oracle comparator; period fixed a priori and deliberately not equal to steps_per_task"}
+  ]
+}
