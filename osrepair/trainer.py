@@ -98,8 +98,10 @@ def _norm(xs: list[float]) -> float:
     return math.sqrt(sum(v * v for v in xs))
 
 
-def train_step(state: TrainState, stream: TaskStream) -> dict:
-    task = stream.task_at(state.step)
+def train_step(state: TrainState, stream: TaskStream, task: int | None = None) -> dict:
+    """One optimizer step. ``task`` overrides the stream schedule (used by probes)."""
+    if task is None:
+        task = stream.task_at(state.step)
     x, y = stream.sample_batch(task, state.rngs["data"])
     model = state.model
     cache = model.forward(x, train=True, dropout_rng=state.rngs["dropout"])

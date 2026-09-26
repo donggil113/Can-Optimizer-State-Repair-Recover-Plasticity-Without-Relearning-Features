@@ -1,0 +1,66 @@
+{
+  "name": "p4_stage1",
+  "question": "Is there a loss of learning ability on a comparable new task? If so, is a correctly bias-corrected optimizer-state intervention distinguishable from its update-magnitude effect?",
+  "status_note": "Exploratory diagnostic. Test seeds 3000-3002 were already viewed in p4_smoke_6e4cdaf (first 4 random_teacher tasks share teachers), so they are development data now; this is NOT a confirmatory experiment. All intervention timings are a pre-specified ORACLE boundary (end of the training stream).",
+  "model": {"hidden": 32, "dropout": 0.1, "norm": "batchnorm", "bn_momentum": 0.1, "bn_eps": 1e-05},
+  "stream_common": {"in_dim": 16, "n_train_tasks": 50, "steps_per_task": 200, "batch_size": 16, "eval_size": 256},
+  "conditions": [
+    {"name": "random_teacher_c4", "family": "random_teacher", "n_classes": 4,
+     "basis": "existing smoke stream family and model; length from PREREGISTRATION amendment 1-4 (>= 50 tasks)"},
+    {"name": "label_permutation_c10", "family": "label_permutation", "n_classes": 10,
+     "basis": "existing label_permutation family; 10 classes because with 4 classes only 24 permutations exist and 50 tasks would repeat them, so the probe task would not be new. Runtime assertion: probe permutation never trained."}
+  ],
+  "condition_count_note": "Exactly two conditions fixed before running; no length/model sweep.",
+  "seeds": {"dev": [1000, 1001], "test": [3000, 3001, 3002],
+            "note": "test = first 3 seeds of the original test split, as allowed; dev = first 2 of the dev split (budget)."},
+  "probe": {
+    "protocol": "Fixed probe task = stream task index n_train_tasks (never trained). Starting points: fresh (same initial weights, fresh optimizer), early (end of task 0, carried optimizer state), late (end of task 49, carried optimizer state). Probe data/dropout RNG replaced by derive_seed('probe', stream, seed) for every starting point: identical batches, masks and update budget.",
+    "steps": 200, "eval_every": 10, "early_window": 50, "probe_size": 64
+  },
+  "base_family": "adam",
+  "secondary_families": ["adam_eqbeta", "sgd"],
+  "tuning": {
+    "split": "dev",
+    "objective": "online training accuracy averaged over all steps of the 50-task stream (online accuracy as in Dohare et al. 2024); higher is better; ties -> earliest grid entry",
+    "families": {
+      "adam": {"base": {"kind": "adam", "beta1": 0.9, "beta2": 0.999, "eps": 1e-08}, "lr_grid": [0.001, 0.003, 0.01, 0.03]},
+      "adam_eqbeta": {"base": {"kind": "adam", "beta1": 0.9, "beta2": 0.9, "eps": 1e-08}, "lr_grid": [0.001, 0.003, 0.01, 0.03]},
+      "sgd": {"base": {"kind": "sgd", "momentum": 0.9}, "lr_grid": [0.003, 0.01, 0.03, 0.1]}
+    },
+    "edge_extension": {
+      "rule": "Same rule for every family: if the selected LR is the min or max of the grid, add ONE value (min/3 or max*3) on that side, run it on the same dev seeds, reselect. At most one extension. If the selection is still at an edge -> TUNING_UNRESOLVED (no further extension).",
+      "factor": 3.0,
+      "cost_bound": "at most 1 extra LR x 2 dev seeds x 2 conditions = 4 trunks (~124 CPU s) per family"
+    }
+  },
+  "interventions": {
+    "start": "the same late checkpoint (with probe RNG) as the phenomenon 'late' probe; keep_all must reproduce that probe bitwise",
+    "primary": ["reset_m", "reset_v", "reset_both", "reset_t"],
+    "artifacts": ["reset_v__shared_keep", "reset_both__shared_keep"],
+    "arms": [
+      {"name": "keep_all", "intervention": {"kind": "keep_all"}},
+      {"name": "reset_m", "intervention": {"kind": "reset_m", "counter": "decoupled"}},
+      {"name": "reset_v", "intervention": {"kind": "reset_v", "counter": "decoupled"}},
+      {"name": "reset_both", "intervention": {"kind": "reset_both", "counter": "decoupled"}},
+      {"name": "reset_t", "intervention": {"kind": "reset_t"}},
+      {"name": "keepdir_reset_mmag", "intervention": {"kind": "keep_all"}, "norm_match_reference": "reset_m"},
+      {"name": "keepdir_reset_vmag", "intervention": {"kind": "keep_all"}, "norm_match_reference": "reset_v"},
+      {"name": "keepdir_reset_bothmag", "intervention": {"kind": "keep_all"}, "norm_match_reference": "reset_both"},
+      {"name": "keepdir_reset_tmag", "intervention": {"kind": "keep_all"}, "norm_match_reference": "reset_t"},
+      {"name": "reset_v__shared_keep", "intervention": {"kind": "reset_v", "counter": "shared_keep"}},
+      {"name": "reset_both__shared_keep", "intervention": {"kind": "reset_both", "counter": "shared_keep"}}
+    ],
+    "information_access": "All arms: current probe batch labels + ORACLE timing (intervention at the end of the training stream, i.e. at a known boundary). keepdir_* (coupled controls): additionally read the per-step, per-tensor update norms of the referenced arm's full probe run (privileged, requires running that arm first: +1 probe run of compute each). Not deployable methods."
+  },
+  "decision": {
+    "mie_acc": 0.02,
+    "phenomenon": "Per condition, base family: ESTABLISHED iff mean over 3 test seeds of (late - early) probe_auc_acc <= -0.02 AND all 3 seed differences < 0. Missing/failed cells or base tuning not RESOLVED -> INCOMPLETE. Otherwise NOT_ESTABLISHED (= not observed in this setting; not evidence of absence).",
+    "intervention": "Per correctly-corrected X in primary: effect present iff mean (X - keep_all) probe_auc_acc >= 0.02 and all seeds > 0. DIFFERENCE_REMAINS iff effect present AND |mean (X - keepdir_Xmag)| >= 0.02 with all seeds the same sign. Else EXPLAINED_BY_UPDATE_NORM or NO_POSITIVE_EFFECT_OVER_KEEP_ALL. Any DIFFERENCE_REMAINS -> MECHANISM_PILOT_CANDIDATE (scope: this synthetic setting, oracle timing); else STATE_REPAIR_BRANCH_ON_HOLD. With n=3, no difference is NOT equivalence.",
+    "not_claimed": "Weights move after the intervention, so no 'without relearning features' claim is made; CKA/parameter movement are descriptive only."
+  },
+  "cost_model": {"step_cpu_s": 0.0029, "trunk_cpu_s": 31.0, "probe_cpu_s": 2.0,
+                 "planned_cpu_s": "tuning <= 60 trunks (1860) + phenomenon 6 x 37 (222) + interventions 6 x 22 (132) + secondary 12 x 37 (444) = ~2660"},
+  "resource_caps": {"max_cpu_seconds": 3600, "reserved_cpu_seconds": 200, "os_cpu_grace_seconds": 60,
+                    "max_rss_gib": 3.0, "workers": 1, "threads": 1,
+                    "note": "3600 s is the whole-step cap; 200 s reserved for parity/unit tests and timing probes run outside this process (measured separately). Install/download cost recorded separately in runs/install/."}
+}

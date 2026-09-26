@@ -1,0 +1,3 @@
+# git 87e76e51ce591365df2298d60687ddbadb120d14 (+ uncommitted test_torch_parity.py)
+# torch 2.14.0+cpu python 3.11.15 threads 1
+vanilla Adam 400 steps, max rel diff: {'w': '1.67e-14', 'm': '1.41e-13', 'v': '3.88e-16', 'upd': '3.56e-11'} | step counter equal: True
